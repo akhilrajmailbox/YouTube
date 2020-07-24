@@ -4,7 +4,9 @@
 # create OAuth Client ID "API yt-secret.json" from https://console.cloud.google.com/apis/credentials
 # https://github.com/youtube/api-samples/
 
+# python 3 needed
+apt install python-pip
 pip install google-auth-oauthlib
 pip install --upgrade google-api-python-client
 
-python3 vid-cmnt.py
+python vid-cmnt.py &
