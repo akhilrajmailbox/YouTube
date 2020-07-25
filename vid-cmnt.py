@@ -43,7 +43,6 @@ def main():
     api_service_name = "youtube"
     api_version = "v3"
     client_secrets_file = "yt-secret.json"
-    randomnum = randint(0,9)
     mychannelid = ""
     ytvid_id = ""
 
@@ -57,6 +56,7 @@ def main():
 
 
     while(True):
+        randomnum = randint(0,9)
         ## Check the non-spam comments
         cmnt_request = youtube.commentThreads().list(
             part="snippet,replies",
