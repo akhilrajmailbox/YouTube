@@ -9,4 +9,8 @@ apt install python-pip
 pip install google-auth-oauthlib
 pip install --upgrade google-api-python-client
 
-python vid-cmnt.py &
+
+# python vid-cmnt.py
+# ctrl + z
+# bg
+# jobs
