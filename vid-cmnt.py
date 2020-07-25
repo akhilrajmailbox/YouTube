@@ -92,7 +92,7 @@ def main():
         change = (vidname_views not in vidname_title)
 
         if(change):
-            vidname_title = " This Video Has " + vidname_views + " Views, Thank you #" + cmnt_ytchannel;
+            vidname_title = "This Video Has " + vidname_views + " Views, Promotion Channel : #" + cmnt_ytchannel;
             vidname_snippet["title"] = vidname_title
 
             change_request = youtube.videos().update(
@@ -139,7 +139,7 @@ def main():
 
 
         print("Worked...!");
-        time.sleep(120)
+        time.sleep(300)
 
 
 if __name__ == "__main__":
