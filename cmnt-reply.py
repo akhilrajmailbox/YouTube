@@ -42,8 +42,27 @@ my_eng_support_replies = [
 ]
 
 
+my_coc_support_replies = [
+    "COC Gamer ?, plz check my channel and support me plz",
+    "clash of clans gaming channel started... please support",
+    "plz check my channe for new coc gaming videos",
+    "I have started one gaming channel, plz support me",
+    "Support my new channe, it's a gaming channel",
+    "Clash  of clans, nice game right ?, plz support me to grow with my channel",
+    "expecting  your support for my channel, plz",
+    "recently I started one youtube channel for coc, plz take a look",
+    "check my recent coc video uploaded, if you like it then plz support me..",
+    "support me gusy to live in youtube",
+    "Clash of Clans is an awesome game, Plz check my channel and support me",
+    "for ncie COC gaming  videos and news, please support me  and check my channel",
+    "Please have a look into my new video and channel, help me to grow",
+    "new gaming channel, check it and support me if my channel seems good to you",
+    "Clash of Clans channel started by me, I haven't uploaded more videos, but will do, please support me"
+]
+
+
 my_mallu_support_replies = [
-    "കൂട്ടുകാരാ , സപ്പോർട്ട് ചെയ്യാമോ ?",
+    "കൂട്ടുകാരാ, സപ്പോർട്ട് ചെയ്യാമോ ?",
     "എന്റെ ചാനൽ ഒന്ന് നോക്കാമോ ?, ഒന്ന് ഹെല്പ് ചെയ്‌തു, സപ്പോർട്ട് please",
     "എന്നെ സപ്പോർട്ട് ചെയ്യാമോ ?, എന്റെ ചാനൽ ഒന്ന് നോക്കണേ",
     "ചാനൽ grow ചെയ്യാൻ help cheyaneeee, plz",
@@ -76,7 +95,7 @@ def main(argv):
     ytvid_id = "" # no need to change anything here
     reply_opts = "" # no need to change anything here
     google_user = "" # no need to change anything here
-    params_validation="\n\npython cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google user> -r <reply options> \nreply options : eng or mal or mix\ngoogle user : choose between 0 and 9\n"
+    params_validation="\n\npython cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google user> -r <reply options> \nreply options : eng or mal or or coc or mix\ngoogle user : choose between 0 and 9\n"
     api_service_name = "youtube"
     api_version = "v3"
 
@@ -178,9 +197,11 @@ def main(argv):
             my_replies = my_eng_support_replies
         elif reply_opts == "mal":
             my_replies = my_mallu_support_replies
+        elif reply_opts == "coc":
+            my_replies = my_coc_support_replies
         elif reply_opts == "mix":
-            repliesrandom = randint(0,29)
-            my_replies = my_eng_support_replies + my_mallu_support_replies
+            repliesrandom = randint(0,44)
+            my_replies = my_eng_support_replies + my_mallu_support_replies + my_coc_support_replies
         else:
             print("reply_opts need to pass...!")
             sys.exit(2)
