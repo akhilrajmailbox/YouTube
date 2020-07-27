@@ -95,7 +95,7 @@ def main(argv):
     ytvid_id = "" # no need to change anything here
     reply_opts = "" # no need to change anything here
     google_user = "" # no need to change anything here
-    params_validation="\n\npython cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google user> -r <reply options> \nreply options : eng or mal or or coc or mix\ngoogle user : choose between 0 and 9\n"
+    params_validation="\n\npython cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google user> -r <reply options> \nreply options : eng or mal or or coc or col or mix\ngoogle user : choose between 0 and 9\n"
     api_service_name = "youtube"
     api_version = "v3"
 
@@ -202,6 +202,9 @@ def main(argv):
         elif reply_opts == "mix":
             repliesrandom = randint(0,44)
             my_replies = my_eng_support_replies + my_mallu_support_replies + my_coc_support_replies
+        elif reply_opts == "col":
+            repliesrandom = randint(0,29)
+            my_replies = my_mallu_support_replies + my_coc_support_replies
         else:
             print("reply_opts need to pass...!")
             sys.exit(2)
