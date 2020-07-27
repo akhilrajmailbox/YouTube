@@ -42,8 +42,8 @@ def main():
 
     api_service_name = "youtube"
     api_version = "v3"
-    client_secrets_file = "yt-secret.json"
-    mychannelid = ""
+    client_secrets_file = "pmg-yt-secret.json"
+    mychannelid = "UCezN4irZSEjCAZkhktEYb3w"
     ytvid_id = ""
 
 
@@ -139,7 +139,7 @@ def main():
 
 
         print("Worked...!");
-        time.sleep(300)
+        time.sleep(600)
 
 
 if __name__ == "__main__":

@@ -14,3 +14,10 @@ pip install --upgrade google-api-python-client
 # ctrl + z
 # bg
 # jobs
+
+
+
+# sudo apt-get install screen
+# screen python vid-cmnt.py
+# Press keys Ctrl-A followed by Ctrl-D
+# screen -r
