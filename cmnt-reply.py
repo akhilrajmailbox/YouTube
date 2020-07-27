@@ -224,8 +224,8 @@ def main(argv):
             cmnt_response = cmnt_reply.execute()
             print("Successfully Send the reply to " + cmnt_commentown)
 
-        print("Sleeping for 5 sec")
-        time.sleep(5)
+        print("Sleeping for 3 sec")
+        time.sleep(3)
 
 
     print("Total Reply : " + str(comment_count))
