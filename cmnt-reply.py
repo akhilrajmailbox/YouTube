@@ -8,81 +8,196 @@ import array as arr
 from random import randint
 import sys, getopt
 
-
-my_wishes = [
-    "Hello ",
-    "Hey ",
-    "My Friend ",
-    "Dude ",
-    "Hi ",
-    "Heyy ",
-    "Hooi ",
-    "Hey dude ",
-    "Hellowww ",
-    "Hiiii "
-]
-
-
-my_eng_support_replies = [
-    "Be My Friend, and Grow Together... I am Also new here",
-    "I will share nice videos, Support Everyone, add me as a friend I will also add you",
-    "Friends ?, Support Together and can succeeedddd",
-    "Add me as a new friend, I will also add you...",
-    "Come to my channel and support me, i will also support you",
-    "If you love awesome videos, please check my channel and help me  to grow",
-    "Check my channel and support me here, i will also do the same to your channel",
-    "Support me and I am happy to support you also",
-    "Check my videos and support me plzzzz if you like it, i will also check your channel.",
-    "Be my Friend and support each other...",
-    "Let be friends and grow here together",
-    "plz support me to grow in yt, plzzz",
-    "Check my new videos and plz support if you like",
-    "Support plz, then you can also expect support from meeeee",
-    "I am trying to grow in y0utube, but its hard, plz support"
-]
-
-
-my_coc_support_replies = [
-    "COC Gamer ?, plz check my channel and support me plz",
-    "clash of clans gaming channel started... please support",
-    "plz check my channe for new coc gaming videos",
-    "I have started one gaming channel, plz support me",
-    "Support my new channe, it's a gaming channel",
-    "Clash  of clans, nice game right ?, plz support me to grow with my channel",
-    "expecting  your support for my channel, plz",
-    "recently I started one youtube channel for coc, plz take a look",
-    "check my recent coc video uploaded, if you like it then plz support me..",
-    "support me gusy to live in youtube",
-    "Clash of Clans is an awesome game, Plz check my channel and support me",
-    "for ncie COC gaming  videos and news, please support me  and check my channel",
-    "Please have a look into my new video and channel, help me to grow",
-    "new gaming channel, check it and support me if my channel seems good to you",
-    "Clash of Clans channel started by me, I haven't uploaded more videos, but will do, please support me"
-]
-
-
-my_mallu_support_replies = [
-    "കൂട്ടുകാരാ, സപ്പോർട്ട് ചെയ്യാമോ ?",
-    "എന്റെ ചാനൽ ഒന്ന് നോക്കാമോ ?, ഒന്ന് ഹെല്പ് ചെയ്‌തു, സപ്പോർട്ട് please",
-    "എന്നെ സപ്പോർട്ട് ചെയ്യാമോ ?, എന്റെ ചാനൽ ഒന്ന് നോക്കണേ",
-    "ചാനൽ grow ചെയ്യാൻ help cheyaneeee, plz",
-    "ഞാൻ പുതിയ ചാനൽ start ചെയ്തു, സപ്പോർട്ട് ചെയ്യണേ",
-    "എന്റെ ചാനൽ ഒന്ന് നോക്കണേ",
-    "പുതിയ ചാനൽ ആണ്, സപ്പോർട്ട് ചെയ്യണേ",
-    "എന്റെ പുതിയ യൂട്യൂബ് ചാനൽ ആണ് ഇത്‌, ഒന്ന് സപ്പോർട്ട് ചെയ്യണേ",
-    "ന്യൂ ചാനൽ, ഒരു സബ്സ്ക്രൈബ് പ്രതീഷിക്കുന്നു",
-    "ഒന്ന് സബ്സ്ക്രൈബ് ചെയ്തു ഹെല്പ് ചെയ്യാമോ",
-    "എന്റെ ചാനലിൽ കേറി ഒന്ന് നോക്കണേ, ഒന്ന് സബ്സ്ക്രൈബ് ചെയ്യാമോ ?",
-    "മൈ ന്യൂ യൂട്യൂബ് ചാനൽ, സബ്സ്ക്രൈബ് ചെയ്യാമോ ?",
-    "ചാനൽ സ്റ്റാർട്ട് ചെയ്‌തൂട്ടോ, ഒന്ന് ഹെല്പ് ചെയ്യണേ, സബ്സ്ക്രൈബ്",
-    "പുതിയ ചാനൽ ആണ്, ഒരുപാട് വീഡിയോസ് ഒന്നും ഇല്ലാ, സപ്പോർട്ട് ചെയ്യാമോ ?",
-    "എന്റെ ഈ ചാനലിൽ ഒന്ന് കേറി നോക്കണേ"
-]
-
-
-
-
 scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
+my_channel = "#prettymuchgaming"
+
+
+support_replies_0 = [
+    "എന്റെ",
+    "പുതിയ‌",
+    "ഏതുനമ്മുടെ",
+    "എന്റെ_ഈ",
+    "എന്റെഈ",
+    "എന്റെ_",
+    "നമ്മുടെ‌",
+    "എന്റെയും",
+    "യൂട്യൂബിൽഎന്റെ",
+    "എന്റെഗെയിമിംഗ്",
+    "എന്നെ",
+    "എന്റെ,,",
+    "എന്റെന്റെ,",
+    "എന്റെയൂട്യൂബ്",
+    "എന്റേത്",
+    "എന്റെcoc",
+    "_എന്റെഈ",
+    "എന്റെപുതിയ",
+    "നന്മുടെ",
+    "എന്എന്റെ"
+]
+
+support_replies_1 = [
+    "ചാനൽൽ",
+    "_ചാനൽ_",
+    "ചാനല്",
+    "ചാനലിൽ",
+    "യൂട്യൂബ്ചാനലിൽ",
+    "യൂട്യൂബ്ചാനൽ",
+    "യൂട്യൂബ്_ചാനൽ,",
+    "yt_ചാനലിൽ",
+    "ചാനൽ,",
+    "ചാനനൽ",
+    "ചാനൽ_,",
+    "_ചാനൽ",
+    "ചാ_നൽ",
+    "ചാന_ൽ",
+    "ചാനൽ.,",
+    "ചാനൽs",
+    "(ചാനൽ",
+    "ചാനൽ_)",
+    "yt_ചാനൽ_",
+    "ചാനൽ_ൽ"
+]
+
+support_replies_2 = [
+    "ഒന്ന്നോക്കാമോ",
+    "ആണ്ഇത്‌",
+    "ഗെയിമിംഗ്_ആണേ",
+    "കേറി_നോക്കണേ",
+    "നോക്കണേ",
+    "സ്റ്റാർട്ട്ചെയ്തു",
+    "ആണ്_ഇത്‌",
+    "കേറിഒന്ന്നോക്കണേ",
+    "തുടങ്ങിയിട്_കൂട്ടുകാരെ",
+    "ആണ്എന്റെ",
+    "തുടങ്ങി_",
+    "തുടങ്ങിയിട്ടോ",
+    "കേറി_നോക്കൂ",
+    "നോക്കാമോ",
+    "കേറിനോക്കണേ",
+    "അനാട്ടോഎന്റേത്",
+    "കൊള്ളാമോ",
+    "എങ്ങനെഉണ്ട്",
+    "ഗെയിമിംഗ്ചാനൽ_കൊള്ളാമോ",
+    "വീഡിയോസ്ഒന്ന്_കാണാമോ"
+]
+
+
+
+
+friends_replies_0 = [
+    "എങ്ങോട്ടു",
+    "എങ്ങോ_ട്ടു",
+    "ഇങ്ങോട്ടു",
+    "ഇ_ങ്ങോട്ടു",
+    "ഇങ്ങു",
+    "എന്റെ",
+    "ഇങ്",
+    "എന്റെ",
+    "എൻറെ",
+    "എൻ്റെ",
+    "ഏന്റെന്റ",
+    "എങ്ങു",
+    "ഇവിടേക്കു",
+    "നമ്മുടേ",
+    "നമ്മുടെ",
+    "ഇവിടെ",
+    "നമ്മടെ",
+    "നമ്മടേ",
+    "എന്റ",
+    "ഇവിടേക്ക്"
+]
+
+friends_replies_1 = [
+    "കൂട്ടാകാൻ",
+    "കൂട്ടാ_കാൻ",
+    "ഫ്രണ്ട്",
+    "കൂട്ടായിട്ടു",
+    "കൂ_ട്ടായിട്ടു",
+    "കൂട്ടായി",
+    "കൂട്ടായിയി",
+    "കൂട്ടായ്",
+    "ഫ്രണ്ട്ആയി",
+    "കൂട്ടായ്ട്ടു",
+    "കമ്പനിയായി",
+    "കൂട്ടുകൂടാൻ",
+    "കൂട്ടു_കൂടാനും",
+    "കൂട്ടുകൂടാന്",
+    "ഫ്രണ്ട്ആയിട്ടു",
+    "ഫ്രണ്ട്_അകാൻ",
+    "സുഹൃത്",
+    "സുഹൃത്_അകാൻ",
+    "കൂടെ_കൂടാൻ",
+    "കൂടെകൂടാനയി"
+]
+
+friends_replies_2 = [
+    "വരുമോ?",
+    "ആകാമോ?",
+    "വരുന്നോ",
+    "_വരാമോ",
+    "ആയിക്കോ",
+    "ആകു",
+    "പോരെ",
+    "വരു?",
+    "വരണേ",
+    "ചെയ്യണേ",
+    "വരുന്നേ",
+    "ആയിവന്നേ",
+    "ഓടിപോരെ",
+    "എങ്ങു_പോരെന്നെ",
+    "സ്വാഗതം",
+    "വരുവോ",
+    "വാ",
+    "വായോ?",
+    "പോരെന്നെ?",
+    "വ_രാമോ?"
+]
+
+friends_replies_3 = [
+    "അങ്ങോട്ടും",
+    "അങ്ങും",
+    "തിരിച്ചും",
+    "അങ്ങോ_ട്ടും",
+    "അവിടെ",
+    "ഞാനും",
+    "അവിടെക്ക്",
+    "അവിടേ_ക്കും",
+    "അവിടെത്തെക്ക്",
+    "അ_വിടെത്തെക്ക്",
+    "അവിടെത്തെക്കും",
+    "അനോട്ടു",
+    "ആങ്ങും",
+    "അങോട്ടും",
+    "അങോ_ട്ടും",
+    "അ_നോട്ടു",
+    "തന്റെ",
+    "തന്റെ",
+    "അങ്ങോട്ടേക്",
+    "അവിടെത്തെ_ക്കും"
+]
+
+friends_replies_4 = [
+    "കൂട്ടാകാൻ വരാം",
+    "വരാമേ",
+    "ഞാൻ വരാം",
+    "ഞാൻവരാം_ കൂട്ടാകാൻ..",
+    "ഞാൻ_ഫ്രണ്ട്ആയി വരാമേ",
+    "കൂട്ടായേക്കാം",
+    "ഉടൻ കൂട്ടായി വന്നേക്കാം",
+    "എപ്പോൾതന്നെ വരാം",
+    "ഫ്രണ്ട്_ആകാം",
+    "ഫുൾ സപ്പോട്ട്_ഉണ്ടാകും",
+    "വരാമേ_ഫ്രണ്ട് ആയിട്ട്യ്",
+    "പെട്ടെന്ന് വന്നേക്കാം",
+    "വന്നേക്കാം അനോട്ടേക്കു",
+    "കേറി വന്നേക്കാം",
+    "വരാ_മേ",
+    "കൂട്ടാകാം",
+    "ചാനലിലൊട്ടും കൂട്ടായേക്കാം",
+    "ചാനൽ_ഫ്രണ്ട് ആയേക്കാമെ",
+    "ഏതോയേക്കാം",
+    "എത്താം"
+]
 
 
 
@@ -93,14 +208,13 @@ def main(argv):
 
     mychannelid = "" # no need to change anything here
     ytvid_id = "" # no need to change anything here
-    reply_opts = "" # no need to change anything here
     google_user = "" # no need to change anything here
-    params_validation="\n\npython cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google user> -r <reply options> \nreply options : eng or mal or or coc or com or coe or mix\ngoogle user : choose between 0 and 9\n"
+    params_validation="\n\npython cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google user>\ngoogle user : choose between 0 and 9\n"
     api_service_name = "youtube"
     api_version = "v3"
 
     try:
-        opts, args = getopt.getopt(argv,"hc:v:u:r:")
+        opts, args = getopt.getopt(argv,"hc:v:u:")
     except getopt.GetoptError:
         print(params_validation)
         sys.exit(2)
@@ -114,8 +228,6 @@ def main(argv):
             ytvid_id = arg
         elif opt in ("-u"):
             google_user = arg
-        elif opt in ("-r"):
-            reply_opts = arg
 
 
     if mychannelid and len(mychannelid) >= 3:
@@ -135,13 +247,6 @@ def main(argv):
     else:
         print(params_validation)
         sys.exit(2)
-
-    if reply_opts and len(reply_opts) == 3:
-        print ("Reply Option is ", reply_opts)
-    else:
-        print(params_validation)
-        sys.exit(2)
-
 
 
     if google_user == "0":
@@ -181,7 +286,7 @@ def main(argv):
     ## Check the non-spam comments
     cmnt_request = youtube.commentThreads().list(
         part="snippet,replies",
-        maxResults=100,
+        maxResults=20,
         order="time",
         videoId=ytvid_id
     )
@@ -190,27 +295,17 @@ def main(argv):
 
     comment_count = 0
     for item in cmnt_response["items"]:
-        repliesrandom = randint(0,14)
-        wishsrandom = randint(0,9)
 
-        if reply_opts == "eng":
-            my_replies = my_eng_support_replies
-        elif reply_opts == "mal":
-            my_replies = my_mallu_support_replies
-        elif reply_opts == "coc":
-            my_replies = my_coc_support_replies
-        elif reply_opts == "mix":
-            repliesrandom = randint(0,44)
-            my_replies = my_eng_support_replies + my_mallu_support_replies + my_coc_support_replies
-        elif reply_opts == "col":
-            repliesrandom = randint(0,29)
-            my_replies = my_mallu_support_replies + my_coc_support_replies
-        elif reply_opts == "coe":
-            repliesrandom = randint(0,29)
-            my_replies = my_eng_support_replies + my_coc_support_replies
-        else:
-            print("reply_opts need to pass...!")
-            sys.exit(2)
+        random_support_replies_0 = randint(0,19)
+        random_support_replies_1 = randint(0,19)
+        random_support_replies_2 = randint(0,19)
+        random_friends_replies_0 = randint(0,19)
+        random_friends_replies_1 = randint(0,19)
+        random_friends_replies_2 = randint(0,19)
+        random_friends_replies_3 = randint(0,19)
+        random_friends_replies_4 = randint(0,19)
+
+        my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
 
         cmnt_commentid = item["id"];
         cmnt_commentown = item["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
@@ -244,15 +339,15 @@ def main(argv):
                 body=dict(
                 snippet=dict(
                     parentId=cmnt_commentid,
-                    textOriginal= my_wishes[wishsrandom] + cmnt_commentown + ",  " + my_replies[repliesrandom]
+                    textOriginal=my_replies
                 )
                 )
             )
             cmnt_response = cmnt_reply.execute()
             print("Successfully Send the reply to " + cmnt_commentown)
 
-        print("Sleeping for 3 sec")
-        time.sleep(3)
+        print("Sleeping for 10 sec")
+        time.sleep(10)
 
 
     print("Total Reply : " + str(comment_count))
