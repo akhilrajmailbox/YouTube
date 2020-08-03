@@ -14,7 +14,7 @@ mychannelid = "" # no need to change anything here
 ytvid_id = "" # no need to change anything here
 google_user = "" # no need to change anything here
 params_validation="\n\npython cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google user>\ngoogle user : choose between 0 and 9\n"
-# maxresult = 50
+maxresult = 50
 maxrespond = 20
 api_service_name = "youtube"
 api_version = "v3"
@@ -214,9 +214,6 @@ friends_replies_4 = [
 
 ########### function main
 def main(argv):
-    # Disable OAuthlib's HTTPS verification when running locally.
-    # *DO NOT* leave this option enabled in production.
-    # os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
     try:
         opts, args = getopt.getopt(argv,"hc:v:u:")
@@ -234,15 +231,16 @@ def main(argv):
         elif opt in ("-u"):
             google_user = arg
 
-
     if mychannelid and len(mychannelid) >= 3:
         print("Your Channel ID is ", mychannelid)
+        mychannelid = mychannelid
     else:
         print(params_validation)
         sys.exit(2)
 
     if ytvid_id and len(ytvid_id) >= 3:
         print ("Video ID is ", ytvid_id)
+        ytvid_id = ytvid_id
     else:
         print(params_validation)
         sys.exit(2)
@@ -278,7 +276,6 @@ def main(argv):
         print("google_user need to pass...!")
         sys.exit(2)
 
-
     # Get credentials and create an API client
     flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
         client_secrets_file, scopes)
@@ -287,76 +284,136 @@ def main(argv):
         api_service_name, api_version, credentials=credentials)
 
 
-
-    ## Check the non-spam comments
-    cmnt_request = youtube.commentThreads().list(
-        part="snippet,replies",
-        maxResults=maxrespond,
-        order="time",
-        videoId=ytvid_id
-    )
-    cmnt_response = cmnt_request.execute()
-
-
     comment_count = 0
-    for item in cmnt_response["items"][1:maxrespond]:
+    print("Going into the loop")
 
-        random_support_replies_0 = randint(0,19)
-        random_support_replies_1 = randint(0,19)
-        random_support_replies_2 = randint(0,19)
-        random_friends_replies_0 = randint(0,19)
-        random_friends_replies_1 = randint(0,19)
-        random_friends_replies_2 = randint(0,19)
-        random_friends_replies_3 = randint(0,19)
-        random_friends_replies_4 = randint(0,19)
+    while 1:
+        ## Check the non-spam comments
+        cmnt_request = youtube.commentThreads().list(
+            part="snippet,replies",
+            maxResults=maxresult,
+            order="time",
+            videoId=ytvid_id
+        )
+        cmnt_response = cmnt_request.execute()
 
-        my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
+        for item in cmnt_response["items"][1:maxrespond]:
 
-        cmnt_commentid = item["id"];
-        cmnt_commentown = item["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
+            random_support_replies_0 = randint(0,19)
+            random_support_replies_1 = randint(0,19)
+            random_support_replies_2 = randint(0,19)
+            random_friends_replies_0 = randint(0,19)
+            random_friends_replies_1 = randint(0,19)
+            random_friends_replies_2 = randint(0,19)
+            random_friends_replies_3 = randint(0,19)
+            random_friends_replies_4 = randint(0,19)
 
+            my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
 
-        ## vaidate reply
-        reply_check = "null"
-        if "replies" in item:
-            replies_data = item["replies"];
-            for reply in replies_data["comments"]:
-                reply_check = "null"
-                reply_own = reply["snippet"]["authorChannelId"]["value"]
-                # print(reply_own)
-                contain = (mychannelid in reply_own)
-                if(contain):
-                    print(mychannelid + " already response to the comment")
-                    reply_check = "found"
-                    break;
-                else:
-                    print(mychannelid + " going to respond to the latest comment")
-        else:
-            print("No one Replied to This Comment yet...!")
+            cmnt_commentid = item["id"];
+            cmnt_commentown = item["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
 
 
-        ## reply to the comment
-        if reply_check == 'null':
-            comment_count = comment_count + 1
-            print("Replying to Comment : " + str(comment_count))
-            cmnt_reply = youtube.comments().insert(
-                part="snippet",
-                body=dict(
-                snippet=dict(
-                    parentId=cmnt_commentid,
-                    textOriginal=my_replies
+            ## vaidate reply
+            reply_check = "null"
+            if "replies" in item:
+                replies_data = item["replies"];
+                for reply in replies_data["comments"]:
+                    reply_check = "null"
+                    reply_own = reply["snippet"]["authorChannelId"]["value"]
+                    # print(reply_own)
+                    contain = (mychannelid in reply_own)
+                    if(contain):
+                        print(mychannelid + " already response to the comment")
+                        reply_check = "found"
+                        break;
+                    else:
+                        print(mychannelid + " going to respond to the latest comment")
+            else:
+                print("No one Replied to This Comment yet...!")
+
+
+            ## reply to the comment
+            if reply_check == 'null':
+                comment_count = comment_count + 1
+                print("Replying to Comment : " + str(comment_count))
+                reply = youtube.comments().insert(
+                    part="snippet",
+                    body=dict(
+                    snippet=dict(
+                        parentId=cmnt_commentid,
+                        textOriginal=my_replies
+                    )
+                    )
                 )
-                )
+                # reply_response = reply.execute()
+                print("Successfully Send the reply to " + cmnt_commentown)
+
+            print("Sleeping for 10 sec")
+            time.sleep(10)
+
+
+        print("Total Reply : " + str(comment_count))
+
+######################################################
+
+        for cmntitem in cmnt_response["items"][1:maxresult]:
+            cmnt_commentownid = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorChannelId"]["value"]
+
+            ## Check Subscribers Count
+            sub_request = youtube.channels().list(
+                part="statistics",
+                id=cmnt_commentownid
             )
-            cmnt_response = cmnt_reply.execute()
-            print("Successfully Send the reply to " + cmnt_commentown)
+            sub_response = sub_request.execute()
+            sub_count = sub_response["items"][0]["statistics"]["subscriberCount"]
 
-        print("Sleeping for 10 sec")
-        time.sleep(10)
+            if int(sub_count) < maxresult:
+                print("Subscribers count is less than " + str(maxresult) + " for channel : " + cmnt_commentown)
+            else:
+                print(cmnt_commentown + "Has Subscribers count : " + sub_count)
 
 
-    print("Total Reply : " + str(comment_count))
-    print("Worked...!");
+                ## Take Uploads Playlist ID
+                content_request = youtube.channels().list(
+                    part="contentDetails",
+                    id=cmnt_commentownid
+                )
+                content_response = content_request.execute()
+                uploads_id = content_response["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+                print("uploads Playlist's ID :" + uploads_id)
+
+
+                ## New Video ID
+                plvid_request = youtube.playlistItems().list(
+                    playlistId=uploads_id,
+                    part="snippet",
+                    maxResults=1
+                )
+                plvid_response = plvid_request.execute()
+                ytvid_id = plvid_response["items"][0]["snippet"]["resourceId"]["videoId"]
+
+
+                ## Check Comments length
+                newcmnt_request = youtube.commentThreads().list(
+                    part="snippet,replies",
+                    maxResults=maxresult,
+                    order="time",
+                    videoId=ytvid_id
+                )
+                newcmnt_response = newcmnt_request.execute()
+
+                cmnt_count = len(newcmnt_response["items"])
+                if cmnt_count < maxrespond:
+                    print("The new video has not enough comments : " + str(cmnt_count))
+                else:
+                    print("The new video has " + str(cmnt_count) + " comments\n")
+                    print("New video ID for Next Comment : " + ytvid_id)
+                    time.sleep(21600)
+                    break
+
+
+
 
 
 
