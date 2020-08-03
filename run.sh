@@ -4,20 +4,22 @@
 # create OAuth Client ID "API yt-secret.json" from https://console.cloud.google.com/apis/credentials
 # https://github.com/youtube/api-samples/
 
-# python 3 needed
+# python3 needed
 apt install python-pip
 pip install google-auth-oauthlib
 pip install --upgrade google-api-python-client
 
 
-# python vid-cmnt.py
-# ctrl + z
-# bg
-# jobs
-
-
 
 # sudo apt-get install screen
-# screen python vid-cmnt.py
+
+# screen -S name
+# python vid-cmnt.py
 # Press keys Ctrl-A followed by Ctrl-D
-# screen -r
+# screen -ls
+# screen -r name
+
+
+## kill screen
+# screen -ls
+# screen -X -S [session # you want to kill] kill

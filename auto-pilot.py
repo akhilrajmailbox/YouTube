@@ -10,9 +10,6 @@ import sys, getopt
 
 
 ##################################################################
-mychannelid = "" # no need to change anything here
-ytvid_id = "" # no need to change anything here
-google_user = "" # no need to change anything here
 params_validation="\n\npython cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google user>\ngoogle user : choose between 0 and 9\n"
 maxresult = 50
 maxrespond = 20
@@ -214,6 +211,13 @@ friends_replies_4 = [
 
 ########### function main
 def main(argv):
+    # Disable OAuthlib's HTTPS verification when running locally.
+    # *DO NOT* leave this option enabled in production.
+    # os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
+
+    mychannelid = "" # no need to change anything here
+    ytvid_id = "" # no need to change anything here
+    google_user = "" # no need to change anything here
 
     try:
         opts, args = getopt.getopt(argv,"hc:v:u:")
