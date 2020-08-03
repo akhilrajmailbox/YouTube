@@ -350,7 +350,7 @@ def main(argv):
                     )
                     )
                 )
-                # reply_response = reply.execute()
+                reply_response = reply.execute()
                 print("Successfully Send the reply to " + cmnt_commentown)
 
             print("Sleeping for 10 sec")
