@@ -42,10 +42,10 @@ python vid-cmnt.py
 * `ytvid_id` : your video ID
 * `mychannelid` : your channel ID
 * `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
-
+* `-f` : option is for confirm whether it is featured channel or not
 
 ```bash
-python cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google_user>
+python cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google_user> -f <yes or no>
 ```
 
 
@@ -55,15 +55,17 @@ python cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google_user>
 
 * `maxresult` : maximum result of comment (by defaut it is 50)
 * `maxrespond` : maximum respond comment (by defaut it is 20)
+* `waittime` : time to wait before going to next video for comment (by defaut it is 4 hr)
 
 **Note :** Run the Script with following parameters
 
 * `ytvid_id` : your video ID
 * `mychannelid` : your channel ID
 * `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
+* `-f` : option is for confirm whether it is featured channel or not
 
 ```bash
-python auto-pilot.py -c <mychannelid> -v <ytvid_id> -u <google_user>
+python auto-pilot.py -c <mychannelid> -v <ytvid_id> -u <google_user> -f <yes or no>
 ```
 
 

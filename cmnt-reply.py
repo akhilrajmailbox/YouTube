@@ -10,7 +10,7 @@ import sys, getopt
 
 
 ##################################################################
-params_validation="\n\npython cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google user>\ngoogle user : choose between 0 and 9\n"
+params_validation="\n\npython cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google user> -f <yes or no>\n google user : choose between 0 and 9\n -f option is for confirm whether it is featured channel or not"
 # maxresult = 50
 maxrespond = 20
 api_service_name = "youtube"
@@ -21,6 +21,31 @@ scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 
 
 ##################################################################
+
+support_replies_f = [
+    "feature",
+    "_feature",
+    "feature_",
+    "ഫീച്ചർ_ർ",
+    "featurre",
+    "ffeature",
+    "featuree,",
+    "_featuree",
+    "featuree_,",
+    "ഫീച്ചർർ",
+    "featured,",
+    "featured_",
+    "_featured",
+    "_ഫീച്ചർ",
+    "featuredd.,",
+    "ffeatured",
+    "featurred",
+    "ഫീച്ചർ_",
+    "yt_ഫീച്ചർ",
+    "ഫീച്ചർ"
+]
+
+
 support_replies_0 = [
     "എന്റെ",
     "പുതിയ‌",
@@ -218,9 +243,10 @@ def main(argv):
     mychannelid = "" # no need to change anything here
     ytvid_id = "" # no need to change anything here
     google_user = "" # no need to change anything here
+    feature_channel = "" # no need to change anything here
 
     try:
-        opts, args = getopt.getopt(argv,"hc:v:u:")
+        opts, args = getopt.getopt(argv,"hc:v:u:f:")
     except getopt.GetoptError:
         print(params_validation)
         sys.exit(2)
@@ -234,7 +260,8 @@ def main(argv):
             ytvid_id = arg
         elif opt in ("-u"):
             google_user = arg
-
+        elif opt in ("-f"):
+            feature_channel = arg
 
     if mychannelid and len(mychannelid) >= 3:
         print("Your Channel ID is ", mychannelid)
@@ -250,6 +277,14 @@ def main(argv):
 
     if google_user and len(google_user) >= 1:
         print ("Google User is ", google_user)
+    else:
+        print(params_validation)
+        sys.exit(2)
+
+    if feature_channel == "yes":
+        print ("This channel is for promote featured channel")
+    elif feature_channel == "no":
+        print ("This is your Actual Channel")
     else:
         print(params_validation)
         sys.exit(2)
@@ -302,6 +337,7 @@ def main(argv):
     comment_count = 0
     for item in cmnt_response["items"][1:maxrespond]:
 
+        random_support_replies_f = randint(0,19)
         random_support_replies_0 = randint(0,19)
         random_support_replies_1 = randint(0,19)
         random_support_replies_2 = randint(0,19)
@@ -311,7 +347,12 @@ def main(argv):
         random_friends_replies_3 = randint(0,19)
         random_friends_replies_4 = randint(0,19)
 
-        my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
+        if feature_channel == "no":
+            my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
+        elif feature_channel == "yes":
+            my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_f[random_support_replies_f] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
+        else:
+            sys.exit(2)
 
         cmnt_commentid = item["id"];
         cmnt_commentown = item["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
