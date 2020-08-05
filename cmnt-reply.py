@@ -19,7 +19,6 @@ scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 
 
 
-
 ##################################################################
 
 support_replies_f = [
@@ -264,19 +263,19 @@ def main(argv):
             feature_channel = arg
 
     if mychannelid and len(mychannelid) >= 3:
-        print("Your Channel ID is ", mychannelid)
+        print("Your Channel ID(s) : ", mychannelid)
     else:
         print(params_validation)
         sys.exit(2)
 
     if ytvid_id and len(ytvid_id) >= 3:
-        print ("Video ID is ", ytvid_id)
+        print ("Video ID : ", ytvid_id)
     else:
         print(params_validation)
         sys.exit(2)
 
     if google_user and len(google_user) >= 1:
-        print ("Google User is ", google_user)
+        print ("Google User : ", google_user)
     else:
         print(params_validation)
         sys.exit(2)
@@ -359,6 +358,7 @@ def main(argv):
 
 
         ## vaidate reply
+        arr_mychannelid = mychannelid.split(',')
         reply_check = "null"
         if "replies" in item:
             replies_data = item["replies"];
@@ -366,7 +366,7 @@ def main(argv):
                 reply_check = "null"
                 reply_own = reply["snippet"]["authorChannelId"]["value"]
                 # print(reply_own)
-                contain = (mychannelid in reply_own)
+                contain = (reply_own in arr_mychannelid)
                 if(contain):
                     print(mychannelid + " already response to the comment")
                     reply_check = "found"

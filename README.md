@@ -21,7 +21,7 @@ pip install --upgrade google-api-python-client
 **Note :** Update the following in the script before running
 
 * `ytvid_id` : your video ID
-* `mychannelid` : your channel ID
+* `mychannelid` : your channel ID(s) comma separated
 * `client_secrets_file` : your OAuth Client ID json file name
 
 
@@ -40,7 +40,7 @@ python vid-cmnt.py
 **Note :** Run the Script with following parameters
 
 * `ytvid_id` : your video ID
-* `mychannelid` : your channel ID
+* `mychannelid` : your channel ID(s) comma separated
 * `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
 * `-f` : option is for confirm whether it is featured channel or not
 
@@ -60,7 +60,7 @@ python cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google_user> -f <yes or 
 **Note :** Run the Script with following parameters
 
 * `ytvid_id` : your video ID
-* `mychannelid` : your channel ID
+* `mychannelid` : your channel ID(s) comma separated
 * `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
 * `-f` : option is for confirm whether it is featured channel or not
 

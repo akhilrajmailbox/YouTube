@@ -107,13 +107,14 @@ def main():
 
             ## vaidate reply
             reply_check = "null"
+            arr_mychannelid = mychannelid.split(',')
             if "replies" in cmnt_data:
                 replies_data = cmnt_data["replies"];
                 for reply in replies_data["comments"]:
                     reply_check = "null"
                     reply_own = reply["snippet"]["authorChannelId"]["value"]
-                    print(reply_own)
-                    contain = (mychannelid in reply_own)
+                    # print(reply_own)
+                    contain = (reply_own in arr_mychannelid)
                     if(contain):
                         print(mychannelid + " already response to the comment")
                         reply_check = "found"
