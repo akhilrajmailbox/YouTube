@@ -14,7 +14,7 @@ from datetime import datetime, timedelta, timezone
 params_validation="\n\npython cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google user> -f <yes or no>\n google user : choose between 0 and 9\n -f option is for confirm whether it is featured channel or not"
 maxresult = 50
 maxrespond = 20
-waittime = 4
+waittime = 3
 api_service_name = "youtube"
 api_version = "v3"
 scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
@@ -247,7 +247,7 @@ def main(argv):
     feature_channel = "" # no need to change anything here
 
     try:
-        opts, args = getopt.getopt(argv,"hc:v:u:")
+        opts, args = getopt.getopt(argv,"hc:v:u:f:")
     except getopt.GetoptError:
         print(params_validation)
         sys.exit(2)

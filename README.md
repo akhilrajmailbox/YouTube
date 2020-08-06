@@ -1,5 +1,14 @@
 # YouTube Data API
 
+```
+brown : 1
+violet : 2
+blue : 3
+gray : 4
+
+Appoose : UC84Puy3ukY432sb6j1PAHVw,UC_HvWzgIxcDsV9MlYToQ_HQ,UC369tOUf4F1TMKG7gj3v7bA,UCfA-NEVnDwPAVqiTS0LtVbw,UCuqAcyWlYNYp5lCETvrExbA
+```
+
 ## OAuth Client ID
 
 create OAuth Client ID "API yt-secret.json" from [console.cloud.google.com](https://console.cloud.google.com/apis/credentials)
@@ -55,7 +64,7 @@ python cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google_user> -f <yes or 
 
 * `maxresult` : maximum result of comment (by defaut it is 50)
 * `maxrespond` : maximum respond comment (by defaut it is 20)
-* `waittime` : time to wait before going to next video for comment (by defaut it is 4 hr)
+* `waittime` : time to wait before going to next video for comment (by defaut it is 3 hr)
 
 **Note :** Run the Script with following parameters
 
