@@ -6,7 +6,11 @@ import pprint
 import time
 import array as arr
 from random import randint
+import sys, getopt
 
+
+
+##################################################################
 my_replies = [
     "This Message is to Inform you that Video Name has Updated with your Channel name, Pease have a look into the video Name before its expired",
     "Thanks For Participate on My Promotion Programs, Your Channel Name is in My Video, Its Awesome, Right ????",
@@ -33,19 +37,53 @@ my_subs = [
     "Help Plzzz, Subscribe and share this video with your friends"
 ]
 
+
+##################################################################
+params_validation="\n\npython auto-reply.py -v <ytvid_id> -u <google user>\n google user : choose between 0 and 9\n"
+api_service_name = "youtube"
+api_version = "v3"
 scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 
-def main():
+
+
+##################################################################
+
+def main(argv):
     # Disable OAuthlib's HTTPS verification when running locally.
     # *DO NOT* leave this option enabled in production.
     # os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
-    api_service_name = "youtube"
-    api_version = "v3"
-    client_secrets_file = "pmg-yt-secret.json"
-    mychannelid = "UCezN4irZSEjCAZkhktEYb3w"
-    ytvid_id = ""
+    ytvid_id = "" # no need to change anything here
+    google_user = "" # no need to change anything here
 
+    try:
+        opts, args = getopt.getopt(argv,"hv:u:")
+    except getopt.GetoptError:
+        print(params_validation)
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print(params_validation)
+            sys.exit()
+        elif opt in ("-v"):
+            ytvid_id = arg
+        elif opt in ("-u"):
+            google_user = arg
+
+    if ytvid_id and len(ytvid_id) >= 3:
+        print ("Video ID is ", ytvid_id)
+        ytvid_id = ytvid_id
+    else:
+        print(params_validation)
+        sys.exit(2)
+
+    if google_user and len(google_user) >= 1:
+        print ("Google User is ", google_user)
+    else:
+        print(params_validation)
+        sys.exit(2)
+
+    client_secrets_file = "secrets/" + google_user + "-yt-secret.json"
 
     # Get credentials and create an API client
     flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
@@ -55,8 +93,19 @@ def main():
         api_service_name, api_version, credentials=credentials)
 
 
-    while(True):
-        randomnum = randint(0,9)
+    ## Get channel ID
+    mychannel_request = youtube.channels().list(
+        part="statistics",
+        mine=True
+    )
+    mychannel_response = mychannel_request.execute()
+    mychannelid = mychannel_response["items"][0]["id"]
+
+
+    while 1:
+        randomnum_1 = randint(0,9)
+        randomnum_2 = randint(0,9)
+
         ## Check the non-spam comments
         cmnt_request = youtube.commentThreads().list(
             part="snippet,replies",
@@ -68,7 +117,6 @@ def main():
         cmnt_commentid = cmnt_data["id"];
         cmnt_commentown = cmnt_data["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
         cmnt_ytchannel = cmnt_commentown.replace(" ", "")
-
 
 
         ## get views and video name
@@ -107,14 +155,13 @@ def main():
 
             ## vaidate reply
             reply_check = "null"
-            arr_mychannelid = mychannelid.split(',')
             if "replies" in cmnt_data:
                 replies_data = cmnt_data["replies"];
                 for reply in replies_data["comments"]:
                     reply_check = "null"
                     reply_own = reply["snippet"]["authorChannelId"]["value"]
                     # print(reply_own)
-                    contain = (reply_own in arr_mychannelid)
+                    contain = (reply_own in mychannelid)
                     if(contain):
                         print(mychannelid + " already response to the comment")
                         reply_check = "found"
@@ -132,7 +179,7 @@ def main():
                     body=dict(
                     snippet=dict(
                         parentId=cmnt_commentid,
-                        textOriginal=my_replies[randomnum] + "\n\n" + my_subs[randomnum]
+                        textOriginal=my_replies[randomnum_1] + "\n\n" + my_subs[randomnum_2]
                     )
                     )
                 )
@@ -143,5 +190,7 @@ def main():
         time.sleep(600)
 
 
+
+
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])

@@ -11,9 +11,12 @@ from datetime import datetime, timedelta, timezone
 
 
 ##################################################################
-params_validation="\n\npython cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google user> -f <yes or no>\n google user : choose between 0 and 9\n -f option is for confirm whether it is featured channel or not"
-maxresult = 50
-maxrespond = 20
+params_validation="\n\npython auto-reply.py -v <ytvid_id> -u <google user>\n google user : choose between 0 and 9\n"
+targetsub_maxcount = 10000
+targetsub_mincount = 50
+cmnt_maxresult = 50
+cmnt_maxrespond = 20
+maxsmiles = 3
 waittime = 3
 api_service_name = "youtube"
 api_version = "v3"
@@ -21,31 +24,55 @@ scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 
 
 
+##################################################################
+
+smile_replies = [
+    "😍",
+    "😊",
+    "😃",
+    "😁",
+    "❤️",
+    "💞",
+    "💖",
+    "💫",
+    "🎶",
+    "🙏",
+    "💃",
+    "😻",
+    "👀",
+    "❄️",
+    "🐥",
+    "🌷",
+    "🌹",
+    "🍁",
+    "🌺",
+    "🌲",
+    "🌝",
+    "💝",
+    "🎁",
+    "🔔",
+    "📣",
+    "🔈",
+    "🎭",
+    "💎",
+    "🔥",
+    "👋",
+    "👌",
+    "😽",
+    "🌟",
+    "💘",
+    "💗",
+    "😁",
+    "🍀",
+    "🌼",
+    "💐",
+    "🌞"
+]
+
+
 
 ##################################################################
 
-support_replies_f = [
-    "feature",
-    "_feature",
-    "feature_",
-    "ഫീച്ചർ_ർ",
-    "featurre",
-    "ffeature",
-    "featuree,",
-    "_featuree",
-    "featuree_,",
-    "ഫീച്ചർർ",
-    "featured,",
-    "featured_",
-    "_featured",
-    "_ഫീച്ചർ",
-    "featuredd.,",
-    "ffeatured",
-    "featurred",
-    "ഫീച്ചർ_",
-    "yt_ഫീച്ചർ",
-    "ഫീച്ചർ"
-]
 
 support_replies_0 = [
     "എന്റെ",
@@ -241,13 +268,11 @@ def main(argv):
     # *DO NOT* leave this option enabled in production.
     # os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
-    mychannelid = "" # no need to change anything here
     ytvid_id = "" # no need to change anything here
     google_user = "" # no need to change anything here
-    feature_channel = "" # no need to change anything here
 
     try:
-        opts, args = getopt.getopt(argv,"hc:v:u:f:")
+        opts, args = getopt.getopt(argv,"hv:u:")
     except getopt.GetoptError:
         print(params_validation)
         sys.exit(2)
@@ -255,21 +280,10 @@ def main(argv):
         if opt == '-h':
             print(params_validation)
             sys.exit()
-        elif opt in ("-c"):
-            mychannelid = arg
         elif opt in ("-v"):
             ytvid_id = arg
         elif opt in ("-u"):
             google_user = arg
-        elif opt in ("-f"):
-            feature_channel = arg
-
-    if mychannelid and len(mychannelid) >= 3:
-        print("Your Channel ID is ", mychannelid)
-        mychannelid = mychannelid
-    else:
-        print(params_validation)
-        sys.exit(2)
 
     if ytvid_id and len(ytvid_id) >= 3:
         print ("Video ID is ", ytvid_id)
@@ -284,38 +298,7 @@ def main(argv):
         print(params_validation)
         sys.exit(2)
 
-    if feature_channel == "yes":
-        print ("This channel is for promote featured channel")
-    elif feature_channel == "no":
-        print ("This is your Actual Channel")
-    else:
-        print(params_validation)
-        sys.exit(2)
-
-
-    if google_user == "0":
-        client_secrets_file = "secrets/0-yt-secret.json"
-    elif google_user == "1":
-        client_secrets_file = "secrets/1-yt-secret.json"
-    elif google_user == "2":
-        client_secrets_file = "secrets/2-yt-secret.json"
-    elif google_user == "3":
-        client_secrets_file = "secrets/3-yt-secret.json"
-    elif google_user == "4":
-        client_secrets_file = "secrets/4-yt-secret.json"
-    elif google_user == "5":
-        client_secrets_file = "secrets/5-yt-secret.json"
-    elif google_user == "6":
-        client_secrets_file = "secrets/6-yt-secret.json"
-    elif google_user == "7":
-        client_secrets_file = "secrets/7-yt-secret.json"
-    elif google_user == "8":
-        client_secrets_file = "secrets/8-yt-secret.json"
-    elif google_user == "9":
-        client_secrets_file = "secrets/9-yt-secret.json"
-    else:
-        print("google_user need to pass...!")
-        sys.exit(2)
+    client_secrets_file = "secrets/" + google_user + "-yt-secret.json"
 
     # Get credentials and create an API client
     flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
@@ -324,26 +307,32 @@ def main(argv):
     youtube = googleapiclient.discovery.build(
         api_service_name, api_version, credentials=credentials)
 
-
     waittime_sec = waittime * 60 * 60
     comment_count = 0
     print("Going to run the loop with waittime = " + str(waittime) + " hrs (" + str(waittime_sec) + " sec)")
 
-    while 1:
+    ## Get channel ID
+    mychannel_request = youtube.channels().list(
+        part="statistics",
+        mine=True
+    )
+    mychannel_response = mychannel_request.execute()
+    mychannelid = mychannel_response["items"][0]["id"]
 
+
+    while 1:
         prev_ytvid_id = ytvid_id
         ## Check the non-spam comments
         cmnt_request = youtube.commentThreads().list(
             part="snippet,replies",
-            maxResults=maxresult,
+            maxResults=cmnt_maxresult,
             order="time",
             videoId=ytvid_id
         )
         cmnt_response = cmnt_request.execute()
 
-        for item in cmnt_response["items"][1:maxrespond]:
+        for item in cmnt_response["items"][1:cmnt_maxrespond]:
 
-            random_support_replies_f = randint(0,19)
             random_support_replies_0 = randint(0,19)
             random_support_replies_1 = randint(0,19)
             random_support_replies_2 = randint(0,19)
@@ -353,19 +342,32 @@ def main(argv):
             random_friends_replies_3 = randint(0,19)
             random_friends_replies_4 = randint(0,19)
 
-            if feature_channel == "no":
-                my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
-            elif feature_channel == "yes":
-                my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_f[random_support_replies_f] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
-            else:
-                sys.exit(2)
+            ## Smiles 
+            my_smile_num = 0
+            # mid smiles
+            mid_smile_reply = ""
+            mid_smile_num = randint(1,maxsmiles)
+            while my_smile_num < mid_smile_num:
+                random_smile_replies = randint(0,39)
+                mid_smile_reply += smile_replies[random_smile_replies]
+                my_smile_num = my_smile_num + 1
+
+            my_smile_num = 0
+            # end smiles
+            end_smile_reply = ""
+            end_smile_num = randint(1,maxsmiles)
+            while my_smile_num < end_smile_num:
+                random_smile_replies = randint(0,39)
+                end_smile_reply += smile_replies[random_smile_replies]
+                my_smile_num = my_smile_num + 1
+
+            my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + mid_smile_reply + " " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4] + end_smile_reply
 
             cmnt_commentid = item["id"];
             cmnt_commentown = item["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
 
 
             ## vaidate reply
-            arr_mychannelid = mychannelid.split(',')
             reply_check = "null"
             if "replies" in item:
                 replies_data = item["replies"];
@@ -373,7 +375,7 @@ def main(argv):
                     reply_check = "null"
                     reply_own = reply["snippet"]["authorChannelId"]["value"]
                     # print(reply_own)
-                    contain = (reply_own in arr_mychannelid)
+                    contain = (reply_own in mychannelid)
                     if(contain):
                         print(mychannelid + " already response to the comment")
                         reply_check = "found"
@@ -408,64 +410,86 @@ def main(argv):
 
 ######################################################
 
-        for cmntitem in cmnt_response["items"][1:maxresult]:
+        for cmntitem in cmnt_response["items"][1:cmnt_maxresult]:
             cmnt_commentownid = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorChannelId"]["value"]
 
-            ## Check Subscribers Count
-            sub_request = youtube.channels().list(
-                part="statistics",
-                id=cmnt_commentownid
-            )
-            sub_response = sub_request.execute()
-            sub_count = sub_response["items"][0]["statistics"]["subscriberCount"]
-
-            if int(sub_count) < maxresult:
-                print("Subscribers count is less than " + str(maxresult) + " for channel : " + cmnt_commentown)
+            if cmnt_commentownid == mychannelid:
+                print("This is my channel ID, Looking for another channel ID")
             else:
-                print(cmnt_commentown + "Has Subscribers count : " + sub_count)
-
-
-                ## Take Uploads Playlist ID
-                content_request = youtube.channels().list(
-                    part="contentDetails",
+                ## Check Subscribers Count
+                sub_request = youtube.channels().list(
+                    part="statistics",
                     id=cmnt_commentownid
                 )
-                content_response = content_request.execute()
-                uploads_id = content_response["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
-                print("uploads Playlist's ID :" + uploads_id)
+                sub_response = sub_request.execute()
+                sub_response_status = sub_response["items"][0]["statistics"]["hiddenSubscriberCount"]
+                sub_count = sub_response["items"][0]["statistics"]["subscriberCount"]
 
-
-                ## New Video ID
-                plvid_request = youtube.playlistItems().list(
-                    playlistId=uploads_id,
-                    part="snippet",
-                    maxResults=1
-                )
-                plvid_response = plvid_request.execute()
-                ytvid_id = plvid_response["items"][0]["snippet"]["resourceId"]["videoId"]
-
-
-                ## Check Comments length
-                newcmnt_request = youtube.commentThreads().list(
-                    part="snippet,replies",
-                    maxResults=maxresult,
-                    order="time",
-                    videoId=ytvid_id
-                )
-                newcmnt_response = newcmnt_request.execute()
-
-                cmnt_count = len(newcmnt_response["items"])
-                if cmnt_count < maxrespond:
-                    print("The new video has not enough comments : " + str(cmnt_count))
+                if int(sub_count) < targetsub_mincount:
+                    print("Subscribers count is less than " + str(targetsub_mincount) + " for channel : " + cmnt_commentown)
+                elif int(sub_count) > targetsub_maxcount:
+                    print("Subscribers count is greater than " + str(targetsub_maxcount) + " for channel : " + cmnt_commentown)
                 else:
-                    now = datetime.now(timezone.utc)
-                    nextexe = (now + timedelta(hours=waittime)).astimezone()
+                    print(cmnt_commentown + "Has Subscribers count : " + sub_count)
 
-                    print("Previous Video ID : " + prev_ytvid_id + "\n")
-                    print("The new video : " + ytvid_id + "has " + str(cmnt_count) + " comments \n")
-                    print("Sleeping for " + str(waittime) + " hrs (" + str(waittime_sec) + " sec). Next exe at : {nextexe:%I:%M %p}".format(**vars()))
-                    time.sleep(waittime_sec)
-                    break
+                    ## Take Uploads Playlist ID
+                    content_request = youtube.channels().list(
+                        part="contentDetails",
+                        id=cmnt_commentownid
+                    )
+                    content_response = content_request.execute()
+
+                    if len(content_response["items"]) < 1:
+                        print(cmnt_commentownid + " has no playlist")
+                    else:
+                        uploads_id = content_response["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+                        print("uploads Playlist's ID :" + uploads_id)
+
+
+                        ## New Video ID
+                        plvid_request = youtube.playlistItems().list(
+                            playlistId=uploads_id,
+                            part="snippet",
+                            maxResults=1
+                        )
+                        plvid_response = plvid_request.execute()
+
+                        if len(plvid_response["items"]) < 1:
+                            print(cmnt_commentownid + " Hasn't any video")
+                        else:
+                            ytvid_id = plvid_response["items"][0]["snippet"]["resourceId"]["videoId"]
+                            ## Validate comments are turned on or off
+                            cmntoffon_request = youtube.videos().list(
+                                part="statistics",
+                                id=ytvid_id
+                            )
+                            cmntoffon_response = cmntoffon_request.execute()
+
+                            cmntkey_to_ckeck = 'commentCount'
+                            if cmntkey_to_ckeck not in cmntoffon_response['items'][0]['statistics']:
+                                print("Comments are turned off for this video : " + ytvid_id)
+                            else:
+                                ## Check Comments length
+                                newcmnt_request = youtube.commentThreads().list(
+                                    part="snippet,replies",
+                                    maxResults=cmnt_maxresult,
+                                    order="time",
+                                    videoId=ytvid_id
+                                )
+                                newcmnt_response = newcmnt_request.execute()
+
+                                cmnt_count = len(newcmnt_response["items"])
+                                if cmnt_count < cmnt_maxrespond:
+                                    print("The new video has not enough comments : " + str(cmnt_count))
+                                else:
+                                    now = datetime.now(timezone.utc)
+                                    nextexe = (now + timedelta(hours=waittime)).astimezone()
+
+                                    print("Previous Video ID : " + prev_ytvid_id + "\n")
+                                    print("The new video : " + ytvid_id + " has " + str(cmnt_count) + " comments \n")
+                                    print("Sleeping for " + str(waittime) + " hrs (" + str(waittime_sec) + " sec). Next exe at : {nextexe:%I:%M %p}".format(**vars()))
+                                    time.sleep(waittime_sec)
+                                    break
 
 
 

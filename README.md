@@ -1,14 +1,5 @@
 # YouTube Data API
 
-```
-brown : 1
-violet : 2
-blue : 3
-gray : 4
-
-Appoose : UC84Puy3ukY432sb6j1PAHVw,UC_HvWzgIxcDsV9MlYToQ_HQ,UC369tOUf4F1TMKG7gj3v7bA,UCfA-NEVnDwPAVqiTS0LtVbw,UCuqAcyWlYNYp5lCETvrExbA
-```
-
 ## OAuth Client ID
 
 create OAuth Client ID "API yt-secret.json" from [console.cloud.google.com](https://console.cloud.google.com/apis/credentials)
@@ -27,15 +18,14 @@ pip install --upgrade google-api-python-client
 
 ## Live Rename With Views and Channel Name of Last Commenter
 
-**Note :** Update the following in the script before running
+**Note :** Run the Script with following parameters
 
 * `ytvid_id` : your video ID
-* `mychannelid` : your channel ID(s) comma separated
-* `client_secrets_file` : your OAuth Client ID json file name
+* `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
 
 
 ```bash
-python vid-cmnt.py
+python vid-cmnt.py -v <ytvid_id> -u <google_user>
 ```
 
 
@@ -49,33 +39,58 @@ python vid-cmnt.py
 **Note :** Run the Script with following parameters
 
 * `ytvid_id` : your video ID
-* `mychannelid` : your channel ID(s) comma separated
 * `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
-* `-f` : option is for confirm whether it is featured channel or not
 
 ```bash
-python cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google_user> -f <yes or no>
+python cmnt-reply.py -v <ytvid_id> -u <google_user>
 ```
+
 
 
 ## Auto Pilot for comments on Others Channel Video's Comments as Reply
 
 **Note :** Update the following in the script before running
 
-* `maxresult` : maximum result of comment (by defaut it is 50)
-* `maxrespond` : maximum respond comment (by defaut it is 20)
+* `targetsub_maxcount` : maximum subscribers count can be for the channel going to comment (by defaut it is 10000)
+* `targetsub_mincount` : minimum subscribers count can be for the channel going to comment (by defaut it is 50)
+* `cmnt_maxresult` : maximum result of comment (by defaut it is 50)
+* `cmnt_maxrespond` : maximum respond comment (by defaut it is 20)
+* `maxsmiles` : maximum number of smiles (by defaut it is 3)
 * `waittime` : time to wait before going to next video for comment (by defaut it is 3 hr)
 
 **Note :** Run the Script with following parameters
 
 * `ytvid_id` : your video ID
-* `mychannelid` : your channel ID(s) comma separated
 * `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
-* `-f` : option is for confirm whether it is featured channel or not
 
 ```bash
-python auto-pilot.py -c <mychannelid> -v <ytvid_id> -u <google_user> -f <yes or no>
+python auto-reply.py -v <ytvid_id> -u <google_user>
 ```
+
+
+
+## Auto Pilot for subscribe on Others Channel and comment
+
+**Note :** Update the following in the script before running
+
+* `targetsub_maxcount` : maximum subscribers count can be for the channel going to comment (by defaut it is 10000)
+* `mysub_maxcount` : maximum subscribed channels by my channel (by defaut it is 500)
+* `mysub_delcount` : minimum subscribed channels by my channel (by defaut it is 90)
+* `cmnt_maxresult` : maximum result of comment (by defaut it is 50)
+* `cmnt_minresult` : maximum respond comment (by defaut it is 30)
+* `maxsmiles` : maximum number of smiles (by defaut it is 3)
+* `waittime` : time to wait before going to next video for comment (by defaut it is 3 hr)
+
+**Note :** Run the Script with following parameters
+
+* `ytvid_id` : your video ID
+* `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
+
+```bash
+python auto-sub.py -v <ytvid_id> -u <google_user>
+```
+
+
 
 
 

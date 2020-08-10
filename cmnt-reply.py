@@ -10,7 +10,7 @@ import sys, getopt
 
 
 ##################################################################
-params_validation="\n\npython cmnt-reply.py -c <mychannelid> -v <ytvid_id> -u <google user> -f <yes or no>\n google user : choose between 0 and 9\n -f option is for confirm whether it is featured channel or not"
+params_validation="\n\npython cmnt-reply.py -v <ytvid_id> -u <google user>\n google user : choose between 0 and 9\n"
 # maxresult = 50
 maxrespond = 20
 api_service_name = "youtube"
@@ -20,30 +20,6 @@ scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 
 
 ##################################################################
-
-support_replies_f = [
-    "feature",
-    "_feature",
-    "feature_",
-    "ഫീച്ചർ_ർ",
-    "featurre",
-    "ffeature",
-    "featuree,",
-    "_featuree",
-    "featuree_,",
-    "ഫീച്ചർർ",
-    "featured,",
-    "featured_",
-    "_featured",
-    "_ഫീച്ചർ",
-    "featuredd.,",
-    "ffeatured",
-    "featurred",
-    "ഫീച്ചർ_",
-    "yt_ഫീച്ചർ",
-    "ഫീച്ചർ"
-]
-
 
 support_replies_0 = [
     "എന്റെ",
@@ -245,7 +221,7 @@ def main(argv):
     feature_channel = "" # no need to change anything here
 
     try:
-        opts, args = getopt.getopt(argv,"hc:v:u:f:")
+        opts, args = getopt.getopt(argv,"hv:u:")
     except getopt.GetoptError:
         print(params_validation)
         sys.exit(2)
@@ -253,20 +229,11 @@ def main(argv):
         if opt == '-h':
             print(params_validation)
             sys.exit()
-        elif opt in ("-c"):
-            mychannelid = arg
         elif opt in ("-v"):
             ytvid_id = arg
         elif opt in ("-u"):
             google_user = arg
-        elif opt in ("-f"):
-            feature_channel = arg
 
-    if mychannelid and len(mychannelid) >= 3:
-        print("Your Channel ID(s) : ", mychannelid)
-    else:
-        print(params_validation)
-        sys.exit(2)
 
     if ytvid_id and len(ytvid_id) >= 3:
         print ("Video ID : ", ytvid_id)
@@ -280,38 +247,7 @@ def main(argv):
         print(params_validation)
         sys.exit(2)
 
-    if feature_channel == "yes":
-        print ("This channel is for promote featured channel")
-    elif feature_channel == "no":
-        print ("This is your Actual Channel")
-    else:
-        print(params_validation)
-        sys.exit(2)
-
-
-    if google_user == "0":
-        client_secrets_file = "secrets/0-yt-secret.json"
-    elif google_user == "1":
-        client_secrets_file = "secrets/1-yt-secret.json"
-    elif google_user == "2":
-        client_secrets_file = "secrets/2-yt-secret.json"
-    elif google_user == "3":
-        client_secrets_file = "secrets/3-yt-secret.json"
-    elif google_user == "4":
-        client_secrets_file = "secrets/4-yt-secret.json"
-    elif google_user == "5":
-        client_secrets_file = "secrets/5-yt-secret.json"
-    elif google_user == "6":
-        client_secrets_file = "secrets/6-yt-secret.json"
-    elif google_user == "7":
-        client_secrets_file = "secrets/7-yt-secret.json"
-    elif google_user == "8":
-        client_secrets_file = "secrets/8-yt-secret.json"
-    elif google_user == "9":
-        client_secrets_file = "secrets/9-yt-secret.json"
-    else:
-        print("google_user need to pass...!")
-        sys.exit(2)
+    client_secrets_file = "secrets/" + google_user + "-yt-secret.json"
 
 
     # Get credentials and create an API client
@@ -321,6 +257,13 @@ def main(argv):
     youtube = googleapiclient.discovery.build(
         api_service_name, api_version, credentials=credentials)
 
+    ## Get channel ID
+    mychannel_request = youtube.channels().list(
+        part="statistics",
+        mine=True
+    )
+    mychannel_response = mychannel_request.execute()
+    mychannelid = mychannel_response["items"][0]["id"]
 
 
     ## Check the non-spam comments
@@ -346,19 +289,13 @@ def main(argv):
         random_friends_replies_3 = randint(0,19)
         random_friends_replies_4 = randint(0,19)
 
-        if feature_channel == "no":
-            my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
-        elif feature_channel == "yes":
-            my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_f[random_support_replies_f] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
-        else:
-            sys.exit(2)
+        my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
 
         cmnt_commentid = item["id"];
         cmnt_commentown = item["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
 
 
         ## vaidate reply
-        arr_mychannelid = mychannelid.split(',')
         reply_check = "null"
         if "replies" in item:
             replies_data = item["replies"];
@@ -366,7 +303,7 @@ def main(argv):
                 reply_check = "null"
                 reply_own = reply["snippet"]["authorChannelId"]["value"]
                 # print(reply_own)
-                contain = (reply_own in arr_mychannelid)
+                contain = (reply_own in mychannelid)
                 if(contain):
                     print(mychannelid + " already response to the comment")
                     reply_check = "found"
