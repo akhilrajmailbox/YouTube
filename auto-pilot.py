@@ -11,13 +11,17 @@ from datetime import datetime, timedelta, timezone
 
 
 ##################################################################
-params_validation="\n\npython auto-reply.py -v <ytvid_id> -u <google user>\n google user : choose between 0 and 9\n"
+params_validation="\n\npython auto-pilot.py -v <ytvid_id> -u <google user>\n google user : choose between 0 and 9\n"
+
 targetsub_maxcount = 10000
 targetsub_mincount = 50
+mysub_maxcount = 500
+mysub_delcount = 50
 cmnt_maxresult = 20
-cmnt_maxrespond = 6
+cmnt_maxrespond = 5
+
 maxsmiles = 3
-waittime = 40
+waittime = 30
 api_service_name = "youtube"
 api_version = "v3"
 scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
@@ -90,7 +94,7 @@ support_replies_0 = [
     "എന്റെന്റെ,",
     "എന്റെയൂട്യൂബ്",
     "എന്റേത്",
-    "എന്റെcoc",
+    "എന്റെc",
     "_എന്റെഈ",
     "എന്റെപുതിയ",
     "നന്മുടെ",
@@ -262,6 +266,159 @@ friends_replies_4 = [
 ]
 
 
+##################################################################
+
+sub_replies_0 = [
+    "വീഡിയോ",
+    "ഈവീഡിയോ",
+    "വീഡിയോസ്",
+    "ചാനൽ",
+    "_വീഡിയോ",
+    "ഈവീഡിയോ_സ്",
+    "കോൺടെന്റ്",
+    "_ഈവീഡി_യോ",
+    " ചാന_ൽ",
+    "വിഡിയോസൊക്കെ",
+    "ടോപ്പിക്ക്",
+    "വീ_ഡിയോസ്",
+    "ഇ_വീഡിയോ",
+    "ദൃശ്യ സൂപ്പറാണ്,",
+    "വീഡിയോ_ടോപ്പിക്ക്",
+    "_വീഡിയോയോ",
+    "ഇ_ദൃശ്യ",
+    "വിഡിയോ_യോ",
+    "ഈ_വീഡിയോ_",
+    "തന്റെ_വീഡിയോ"
+]
+
+
+sub_replies_1 = [
+    "കൊള്ളാട്ടോ,",
+    "നന്നായിട്ടുണ്ടെ",
+    "അടിപൊളി",
+    "സൂപ്പർ",
+    "കിടു",
+    "അടിപൊളിയായി",
+    "കൊള്ളാമെ,",
+    "കൊള്ളാ_ട്ടോ",
+    "കൊള്ളാമല്ലൊ",
+    "കണ്ടൂട്ടോ",
+    "കൊള്ളാമല്ലോ",
+    "സൂപ്പറായി",
+    "സൂപ്പര്,",
+    "സൂപ്പറാണ്",
+    "സൂപ്പറാ_ണ്",
+    "കൊള്ളാ",
+    "കൊള്ളാ_മേ,",
+    "കിടുക്കി",
+    "കിടുക്കിയിട്ടുണ്ടേ",
+    "സൂപ്പറായിട്ടു_ഉണ്ടേ"
+]
+
+
+sub_replies_2 = [
+    "ഞാൻ",
+    "കൂട്ട്",
+    "ഞാനും",
+    "കൂട്ടായി",
+    "ഞനും",
+    "ഫ്രണ്ട്",
+    "പുതിയ_കൂട്ട്",
+    "ഞാന്_കൂട്ടായിട്ടു",
+    "ഞാനങ്,",
+    "ഞാ_ൻ",
+    "_ഞാനും",
+    "നമ്മൾ",
+    "നമ്മളും",
+    "നമ്മൽ_",
+    "നമ്മള്",
+    "ഞാനിങ്ങു",
+    "ഞാൻ_ഓടി",
+    "ഞാനും_കൂട്ടായിട്ടു",
+    "ഞാനങ്_",
+    "ഞാൻ_കൂട്ട്കൂടാൻ_"
+]
+
+
+sub_replies_3 = [
+    "എത്തീ",
+    "കൂടി",
+    "വന്നു",
+    "വന്നേ,",
+    "എത്തിയെ",
+    "ആയിട്ടുണ്ട്",
+    "എത്തിപ്പോയി,",
+    "വന്നൂട്ടോ",
+    "വന്നേ_",
+    "കൂട്ടാ_യ്",
+    "എത്തി_പ്പോയി",
+    "എത്തി_ട്ടോ,",
+    "കമ്പനി_ആയി",
+    "എത്തി_പ്പോയെന്നേ",
+    "വന്നേന്നേ,",
+    "പോന്നു",
+    "എത്തിട്ടുണ്ടേ",
+    "എത്തിട്ടൊന്നെ,",
+    "കൂടായിട്ടു_ണ്ടെ",
+    "ഓടി_എത്തിയെ"
+]
+
+
+sub_replies_4 = [
+    "അങ്ങോട്ടും",
+    "എന്റെ_എടുത്തേക്കും",
+    "ഇങ്ങു",
+    "അങ്ങ്",
+    "തിരിച്ചു",
+    "അങ്ങോട്ടുമ്മ്",
+    "അങ്ങോ_ട്ടു",
+    "അങ്ങും_",
+    "എന്റെ_ചാനലിലും",
+    "തിരി_ച്ചും",
+    "അങ്ങോട്ടെ_ക്കും",
+    "എന്റെ_ചാനലിൽ",
+    "തിരിച്ചും_",
+    "തിരിചു",
+    "അങ്ങ്ങ്ങ്",
+    "_അങ്ങ്ങ്ങ്",
+    "തിരിച്ചു_വേഗം",
+    "തിരിച്ചും_കൂട്ടായിട്ടു",
+    "എന്റെ_yt_ചാനലിൽ",
+    "തിരിച്ചു_വേഗം"
+]
+
+
+sub_replies_5 = [
+    "വരണേ",
+    "വരൂ",
+    "വാ",
+    "പോരെ",
+    "വായോ",
+    "പൊരേറ്റൊന്നെ",
+    "പോര്",
+    "പോരെന്ന്",
+    "പോരെ_",
+    "പോരെ_ന്ന്",
+    "വരാമോ?",
+    "വാരാണാ_റ്റോ",
+    "പ്രേതീഷിക്കുന്നു",
+    "വരുമെന്ന്",
+    "പോരെന്നെ_",
+    "പോരാമോ?",
+    "പോരേരേ",
+    "വരാമോ_വേഗം?",
+    "_വരണേ?",
+    "വരുന്നേ"
+]
+
+
+
+
+
+
+
+
+
 ########### function main
 def main(argv):
     # Disable OAuthlib's HTTPS verification when running locally.
@@ -308,6 +465,7 @@ def main(argv):
         api_service_name, api_version, credentials=credentials)
 
     waittime_sec = waittime * 60
+    subscribe_count = 0
     comment_count = 0
     print("Going to run the loop with waittime = " + str(waittime) + " min (" + str(waittime_sec) + " sec)")
 
@@ -320,8 +478,117 @@ def main(argv):
     mychannelid = mychannel_response["items"][0]["id"]
 
 
+##################################################################
     while 1:
+        ## Check Subscriber Count
+        checksubdel_request = youtube.subscriptions().list(
+            part="snippet",
+            maxResults=50,
+            mine=True,
+            order="relevance"
+        )
+        checksubdel_response = checksubdel_request.execute()
+        mysubcount = checksubdel_response["pageInfo"]["totalResults"]
+
+        ## Delete `mysub_delcount` Subscribers 
+        if int(mysubcount) >= mysub_maxcount:
+            print("Your Channel : " + mychannelid + " subscribed to " + str(mysubcount) + "\nNeed to Delete " + str(mysub_delcount) + " Subscribed channels")
+            subdel_channel = []
+            list_subdel = ""
+            arr_subdel = ""
+            subdel_pagetoken = ""
+
+            while 1:
+                subdel_request = youtube.subscriptions().list(
+                    part="snippet",
+                    maxResults=50,
+                    mine=True,
+                    order="relevance",
+                    pageToken=subdel_pagetoken
+                )
+                subdel_response = subdel_request.execute()
+
+                subdel_channel += subdel_response["items"]
+                subdel_pagetoken = subdel_response.get("nextPageToken")
+
+                if subdel_pagetoken == "" or len(subdel_channel) >= mysub_delcount:
+                    break
+
+            for delchannels in subdel_channel:
+                list_subdel += delchannels["id"] + ","
+
+            arr_subdel = list_subdel.split(',')
+            print("Number subscribers listed for delete : " + str(len(arr_subdel)))
+
+            for subremove in arr_subdel[:-1]:
+                subremove_request = youtube.subscriptions().delete(
+                    id=subremove
+                )
+                print("Removing subscription ID : " + subremove)
+                subremove_response = subremove_request.execute()
+
+##################################################################
+
         prev_ytvid_id = ytvid_id
+
+        getsub_request = youtube.videos().list(
+            part="snippet",
+            id=ytvid_id
+        )
+        getsub_response = getsub_request.execute()
+        subchannelid = getsub_response["items"][0]["snippet"]["channelId"]
+
+        random_sub_replies_0 = randint(0,19)
+        random_sub_replies_1 = randint(0,19)
+        random_sub_replies_2 = randint(0,19)
+        random_sub_replies_3 = randint(0,19)
+        random_sub_replies_4 = randint(0,19)
+        random_sub_replies_5 = randint(0,19)
+
+
+        my_sub_replies = sub_replies_0[random_sub_replies_0] + " " + sub_replies_1[random_sub_replies_1] + " " + sub_replies_2[random_sub_replies_2] + " " + sub_replies_3[random_sub_replies_3] + " " + sub_replies_4[random_sub_replies_4] + " " + sub_replies_5[random_sub_replies_5]
+        print("my_sub_replies is : " + my_sub_replies)
+
+        ## commenting on the channel
+        mycmnt_request = youtube.commentThreads().insert(
+            part="snippet",
+            body=dict(
+                snippet=dict(
+                    videoId=ytvid_id,
+                    topLevelComment=dict(
+                        snippet=dict(
+                            textOriginal=my_sub_replies
+                        )
+                    )
+                )
+            )
+        )
+        mycmnt_response = mycmnt_request.execute()
+
+        ## subscribe
+        subadd_request = youtube.subscriptions().insert(
+            part="contentDetails,snippet",
+            body=dict(
+                snippet=dict(
+                    resourceId=dict(
+                    channelId=subchannelid,
+                    kind="youtube#channel"
+                    )
+                )
+            )
+        )
+        try:
+            print(mychannelid + " Going to subscribe the channel : " + subchannelid + " by commenting on the video : " + ytvid_id)
+            subadd_response = subadd_request.execute()
+        except:
+            print("An exception occurred, " + mychannelid + " Not able to subscribe the channel : " + subchannelid + " but commented on the video : " + ytvid_id)
+
+        subscribe_count = subscribe_count + 1
+        print("Total Subscribed Channel in this loop : " + str(subscribe_count))
+        
+
+##################################################################
+
         ## Check the non-spam comments
         cmnt_request = youtube.commentThreads().list(
             part="snippet,replies",
@@ -331,7 +598,7 @@ def main(argv):
         )
         cmnt_response = cmnt_request.execute()
 
-        for item in cmnt_response["items"][1:cmnt_maxrespond]:
+        for item in cmnt_response["items"][2:cmnt_maxrespond]:
 
             random_support_replies_0 = randint(0,19)
             random_support_replies_1 = randint(0,19)
@@ -406,9 +673,16 @@ def main(argv):
             time.sleep(10)
 
 
-        print("Total Reply : " + str(comment_count))
+        print("Total Reply in this loop : " + str(comment_count))
 
-######################################################
+        now = datetime.now(timezone.utc)
+        nextexe = (now + timedelta(minutes=waittime)).astimezone()
+        print("Sleeping for " + str(waittime) + " min (" + str(waittime_sec) + " sec). Next exe at : {nextexe:%I:%M %p}".format(**vars()))
+        time.sleep(waittime_sec)
+
+
+
+##################################################################
 
         for cmntitem in cmnt_response["items"][1:cmnt_maxresult]:
             cmnt_commentownid = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorChannelId"]["value"]
@@ -432,64 +706,69 @@ def main(argv):
                 else:
                     print(cmnt_commentown + "Has Subscribers count : " + sub_count)
 
-                    ## Take Uploads Playlist ID
-                    content_request = youtube.channels().list(
-                        part="contentDetails",
-                        id=cmnt_commentownid
+                    ## Check Subscription
+                    subcheck_request = youtube.subscriptions().list(
+                        part="snippet,contentDetails",
+                        channelId=mychannelid,
+                        forChannelId=cmnt_commentownid
                     )
-                    content_response = content_request.execute()
+                    subcheck_response = subcheck_request.execute()
 
-                    if len(content_response["items"]) < 1:
-                        print(cmnt_commentownid + " has no playlist")
+                    if len(subcheck_response["items"]) >= 1:
+                        print(mychannelid + " Already Subscribed to this channel")
                     else:
-                        uploads_id = content_response["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
-                        print("uploads Playlist's ID :" + uploads_id)
-
-
-                        ## New Video ID
-                        plvid_request = youtube.playlistItems().list(
-                            playlistId=uploads_id,
-                            part="snippet",
-                            maxResults=1
+                        ## Take Uploads Playlist ID
+                        content_request = youtube.channels().list(
+                            part="contentDetails",
+                            id=cmnt_commentownid
                         )
-                        plvid_response = plvid_request.execute()
+                        content_response = content_request.execute()
 
-                        if len(plvid_response["items"]) < 1:
-                            print(cmnt_commentownid + " Hasn't any video")
+                        if len(content_response["items"]) < 1:
+                            print(cmnt_commentownid + " has no playlist")
                         else:
-                            ytvid_id = plvid_response["items"][0]["snippet"]["resourceId"]["videoId"]
-                            ## Validate comments are turned on or off
-                            cmntoffon_request = youtube.videos().list(
-                                part="statistics",
-                                id=ytvid_id
+                            uploads_id = content_response["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
+                            print("uploads Playlist's ID :" + uploads_id)
+
+                            ## New Video ID
+                            plvid_request = youtube.playlistItems().list(
+                                playlistId=uploads_id,
+                                part="snippet",
+                                maxResults=1
                             )
-                            cmntoffon_response = cmntoffon_request.execute()
+                            plvid_response = plvid_request.execute()
 
-                            cmntkey_to_ckeck = 'commentCount'
-                            if cmntkey_to_ckeck not in cmntoffon_response['items'][0]['statistics']:
-                                print("Comments are turned off for this video : " + ytvid_id)
+                            if len(plvid_response["items"]) < 1:
+                                print(cmnt_commentownid + " Hasn't any video")
                             else:
-                                ## Check Comments length
-                                newcmnt_request = youtube.commentThreads().list(
-                                    part="snippet,replies",
-                                    maxResults=cmnt_maxresult,
-                                    order="time",
-                                    videoId=ytvid_id
+                                ytvid_id = plvid_response["items"][0]["snippet"]["resourceId"]["videoId"]
+                                ## Validate comments are turned on or off
+                                cmntoffon_request = youtube.videos().list(
+                                    part="statistics",
+                                    id=ytvid_id
                                 )
-                                newcmnt_response = newcmnt_request.execute()
+                                cmntoffon_response = cmntoffon_request.execute()
 
-                                cmnt_count = len(newcmnt_response["items"])
-                                if cmnt_count < cmnt_maxresult:
-                                    print("The new video has not enough comments : " + str(cmnt_count))
+                                cmntkey_to_ckeck = 'commentCount'
+                                if cmntkey_to_ckeck not in cmntoffon_response['items'][0]['statistics']:
+                                    print("Comments are turned off for this video : " + ytvid_id)
                                 else:
-                                    now = datetime.now(timezone.utc)
-                                    nextexe = (now + timedelta(minutes=waittime)).astimezone()
+                                    ## Check Comments length
+                                    newcmnt_request = youtube.commentThreads().list(
+                                        part="snippet,replies",
+                                        maxResults=cmnt_maxresult,
+                                        order="time",
+                                        videoId=ytvid_id
+                                    )
+                                    newcmnt_response = newcmnt_request.execute()
 
-                                    print("Previous Video ID : " + prev_ytvid_id + "\n")
-                                    print("The new video : " + ytvid_id + " has " + str(cmnt_count) + " comments \n")
-                                    print("Sleeping for " + str(waittime) + " min (" + str(waittime_sec) + " sec). Next exe at : {nextexe:%I:%M %p}".format(**vars()))
-                                    time.sleep(waittime_sec)
-                                    break
+                                    cmnt_count = len(newcmnt_response["items"])
+                                    if cmnt_count < cmnt_maxresult:
+                                        print("The new video has not enough comments : " + str(cmnt_count))
+                                    else:
+                                        print("Previous Video ID : " + prev_ytvid_id + "\n")
+                                        print("The new video : " + ytvid_id + " has " + str(cmnt_count) + " comments \n")
+                                        break
 
 
 
