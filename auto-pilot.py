@@ -753,22 +753,26 @@ def main(argv):
                                 if cmntkey_to_ckeck not in cmntoffon_response['items'][0]['statistics']:
                                     print("Comments are turned off for this video : " + ytvid_id)
                                 else:
-                                    ## Check Comments length
-                                    newcmnt_request = youtube.commentThreads().list(
-                                        part="snippet,replies",
-                                        maxResults=cmnt_maxresult,
-                                        order="time",
-                                        videoId=ytvid_id
-                                    )
-                                    newcmnt_response = newcmnt_request.execute()
-
-                                    cmnt_count = len(newcmnt_response["items"])
-                                    if cmnt_count < cmnt_maxresult:
-                                        print("The new video has not enough comments : " + str(cmnt_count))
+                                    cmntcountcheck = cmntoffon_response["items"][0]["statistics"]["commentCount"]
+                                    if cmntcountcheck == 0:
+                                        print("Comments are turned off for this video : " + ytvid_id)
                                     else:
-                                        print("Previous Video ID : " + prev_ytvid_id + "\n")
-                                        print("The new video : " + ytvid_id + " has " + str(cmnt_count) + " comments \n")
-                                        break
+                                        ## Check Comments length
+                                        newcmnt_request = youtube.commentThreads().list(
+                                            part="snippet,replies",
+                                            maxResults=cmnt_maxresult,
+                                            order="time",
+                                            videoId=ytvid_id
+                                        )
+                                        newcmnt_response = newcmnt_request.execute()
+
+                                        cmnt_count = len(newcmnt_response["items"])
+                                        if cmnt_count < cmnt_maxresult:
+                                            print("The new video has not enough comments : " + str(cmnt_count))
+                                        else:
+                                            print("Previous Video ID : " + prev_ytvid_id + "\n")
+                                            print("The new video : " + ytvid_id + " has " + str(cmnt_count) + " comments \n")
+                                            break
 
 
 

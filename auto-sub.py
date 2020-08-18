@@ -482,46 +482,50 @@ def main(argv):
                                 if cmntkey_to_ckeck not in nextcmntoffon_response['items'][0]['statistics']:
                                     print("Comments are turned off for this video : " + nextytvid_id)
                                 else:
-                                    ## Check comments
-                                    nextcheckcmnt_request = youtube.commentThreads().list(
-                                        part="snippet,replies",
-                                        maxResults=cmnt_maxresult,
-                                        order="relevance",
-                                        videoId=nextytvid_id
-                                    )
-                                    nextcheckcmnt_response = nextcheckcmnt_request.execute()
-
-                                    nextcmnt_count = len(nextcheckcmnt_response["items"])
-
-                                    if nextcmnt_count < cmnt_minresult:
-                                        print("The new channel : " + nextchannelid + " , video : " + nextytvid_id + " has not enough comments : " + str(nextcmnt_count))
+                                    cmntcountcheck = nextcmntoffon_response["items"][0]["statistics"]["commentCount"]
+                                    if cmntcountcheck == 0:
+                                        print("Comments are turned off for this video : " + ytvid_id)
                                     else:
-                                        print("The new channel : " + nextchannelid + " , video : " + nextytvid_id + " has enough comments : " + str(nextcmnt_count))
+                                        ## Check comments
+                                        nextcheckcmnt_request = youtube.commentThreads().list(
+                                            part="snippet,replies",
+                                            maxResults=cmnt_maxresult,
+                                            order="relevance",
+                                            videoId=nextytvid_id
+                                        )
+                                        nextcheckcmnt_response = nextcheckcmnt_request.execute()
 
-                                        if len(nextcheckcmnt_response["items"]) < 1:
-                                            print("On Channel " + nextchannelid + ", no one commented yet")
+                                        nextcmnt_count = len(nextcheckcmnt_response["items"])
+
+                                        if nextcmnt_count < cmnt_minresult:
+                                            print("The new channel : " + nextchannelid + " , video : " + nextytvid_id + " has not enough comments : " + str(nextcmnt_count))
                                         else:
-                                            cmnt_check = ""
-                                            for nextcheckcmnt in nextcheckcmnt_response["items"][:2]:
-                                                cmnt_commentown = nextcheckcmnt["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
-                                                cmnt_channelid = nextcheckcmnt["snippet"]["topLevelComment"]["snippet"]["authorChannelId"]["value"]
+                                            print("The new channel : " + nextchannelid + " , video : " + nextytvid_id + " has enough comments : " + str(nextcmnt_count))
 
-                                                ## Check I commented or not
-                                                if mychannelid == cmnt_channelid:
-                                                    cmnt_check = "found"
-                                                    print(mychannelid + " already commented on this video : " + nextytvid_id)
+                                            if len(nextcheckcmnt_response["items"]) < 1:
+                                                print("On Channel " + nextchannelid + ", no one commented yet")
+                                            else:
+                                                cmnt_check = ""
+                                                for nextcheckcmnt in nextcheckcmnt_response["items"][:2]:
+                                                    cmnt_commentown = nextcheckcmnt["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
+                                                    cmnt_channelid = nextcheckcmnt["snippet"]["topLevelComment"]["snippet"]["authorChannelId"]["value"]
+
+                                                    ## Check I commented or not
+                                                    if mychannelid == cmnt_channelid:
+                                                        cmnt_check = "found"
+                                                        print(mychannelid + " already commented on this video : " + nextytvid_id)
+                                                        break
+                                                    else:
+                                                        cmnt_check = "null"
+
+                                                if cmnt_check == 'null':
+                                                    ytvid_id = nextytvid_id
+                                                    print("Previous Video ID : " + prev_ytvid_id + "\n Next Video ID : " + ytvid_id + "\n")
+                                                    now = datetime.now(timezone.utc)
+                                                    nextexe = (now + timedelta(minutes=waittime)).astimezone()
+                                                    print("Sleeping for " + str(waittime) + " mins (" + str(waittime_sec) + " sec). Next exe at : {nextexe:%I:%M %p}".format(**vars()))
+                                                    time.sleep(waittime_sec)
                                                     break
-                                                else:
-                                                    cmnt_check = "null"
-
-                                            if cmnt_check == 'null':
-                                                ytvid_id = nextytvid_id
-                                                print("Previous Video ID : " + prev_ytvid_id + "\n Next Video ID : " + ytvid_id + "\n")
-                                                now = datetime.now(timezone.utc)
-                                                nextexe = (now + timedelta(minutes=waittime)).astimezone()
-                                                print("Sleeping for " + str(waittime) + " mins (" + str(waittime_sec) + " sec). Next exe at : {nextexe:%I:%M %p}".format(**vars()))
-                                                time.sleep(waittime_sec)
-                                                break
 
 if __name__ == "__main__":
     main(sys.argv[1:])
