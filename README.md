@@ -79,7 +79,7 @@ python auto-reply.py -v <ytvid_id> -u <google_user>
 * `cmnt_maxresult` : maximum result of comment (by defaut it is 50)
 * `cmnt_minresult` : maximum respond comment (by defaut it is 30)
 * `maxsmiles` : maximum number of smiles (by defaut it is 3)
-* `waittime` : time to wait before going to next video for comment (by defaut it is 3 hr)
+* `waittime` : time to wait before going to next video for comment (by defaut it is 120 mins)
 
 **Note :** Run the Script with following parameters
 
@@ -104,7 +104,7 @@ python auto-sub.py -v <ytvid_id> -u <google_user>
 * `cmnt_maxresult` : maximum result of comment (by defaut it is 20)
 * `cmnt_maxrespond` : maximum respond comment (by defaut it is 5)
 * `maxsmiles` : maximum number of smiles (by defaut it is 3)
-* `waittime` : time to wait before going to next video for comment (by defaut it is 30 mins)
+* `waittime` : time to wait before going to next video for comment (by defaut it is 120 mins)
 
 **Note :** Run the Script with following parameters
 

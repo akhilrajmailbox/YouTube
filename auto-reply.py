@@ -16,7 +16,7 @@ targetsub_maxcount = 10000
 targetsub_mincount = 50
 cmnt_maxresult = 20
 cmnt_maxrespond = 6
-maxsmiles = 3
+# maxsmiles = 3
 waittime = 40
 api_service_name = "youtube"
 api_version = "v3"
@@ -26,48 +26,48 @@ scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 
 ##################################################################
 
-smile_replies = [
-    "😍",
-    "😊",
-    "😃",
-    "😁",
-    "❤️",
-    "💞",
-    "💖",
-    "💫",
-    "🎶",
-    "🙏",
-    "💃",
-    "😻",
-    "👀",
-    "❄️",
-    "🐥",
-    "🌷",
-    "🌹",
-    "🍁",
-    "🌺",
-    "🌲",
-    "🌝",
-    "💝",
-    "🎁",
-    "🔔",
-    "📣",
-    "🔈",
-    "🎭",
-    "💎",
-    "🔥",
-    "👋",
-    "👌",
-    "😽",
-    "🌟",
-    "💘",
-    "💗",
-    "😁",
-    "🍀",
-    "🌼",
-    "💐",
-    "🌞"
-]
+# smile_replies = [
+#     "😍",
+#     "😊",
+#     "😃",
+#     "😁",
+#     "❤️",
+#     "💞",
+#     "💖",
+#     "💫",
+#     "🎶",
+#     "🙏",
+#     "💃",
+#     "😻",
+#     "👀",
+#     "❄️",
+#     "🐥",
+#     "🌷",
+#     "🌹",
+#     "🍁",
+#     "🌺",
+#     "🌲",
+#     "🌝",
+#     "💝",
+#     "🎁",
+#     "🔔",
+#     "📣",
+#     "🔈",
+#     "🎭",
+#     "💎",
+#     "🔥",
+#     "👋",
+#     "👌",
+#     "😽",
+#     "🌟",
+#     "💘",
+#     "💗",
+#     "😁",
+#     "🍀",
+#     "🌼",
+#     "💐",
+#     "🌞"
+# ]
 
 
 
@@ -342,26 +342,27 @@ def main(argv):
             random_friends_replies_3 = randint(0,19)
             random_friends_replies_4 = randint(0,19)
 
-            ## Smiles 
-            my_smile_num = 0
-            # mid smiles
-            mid_smile_reply = ""
-            mid_smile_num = randint(1,maxsmiles)
-            while my_smile_num < mid_smile_num:
-                random_smile_replies = randint(0,39)
-                mid_smile_reply += smile_replies[random_smile_replies]
-                my_smile_num = my_smile_num + 1
+            # ## Smiles 
+            # my_smile_num = 0
+            # # mid smiles
+            # mid_smile_reply = ""
+            # mid_smile_num = randint(1,maxsmiles)
+            # while my_smile_num < mid_smile_num:
+            #     random_smile_replies = randint(0,39)
+            #     mid_smile_reply += smile_replies[random_smile_replies]
+            #     my_smile_num = my_smile_num + 1
 
-            my_smile_num = 0
-            # end smiles
-            end_smile_reply = ""
-            end_smile_num = randint(1,maxsmiles)
-            while my_smile_num < end_smile_num:
-                random_smile_replies = randint(0,39)
-                end_smile_reply += smile_replies[random_smile_replies]
-                my_smile_num = my_smile_num + 1
+            # my_smile_num = 0
+            # # end smiles
+            # end_smile_reply = ""
+            # end_smile_num = randint(1,maxsmiles)
+            # while my_smile_num < end_smile_num:
+            #     random_smile_replies = randint(0,39)
+            #     end_smile_reply += smile_replies[random_smile_replies]
+            #     my_smile_num = my_smile_num + 1
 
-            my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + mid_smile_reply + " " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4] + end_smile_reply
+            # my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + mid_smile_reply + " " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4] + end_smile_reply
+            my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + " " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
 
             cmnt_commentid = item["id"];
             cmnt_commentown = item["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]

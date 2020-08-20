@@ -17,8 +17,8 @@ cmnt_minresult = 30
 mysub_maxcount = 500
 mysub_delcount = 50
 targetsub_maxcount = 10000
-waittime = 20
-maxsmiles = 3
+waittime = 120
+# maxsmiles = 3
 api_service_name = "youtube"
 api_version = "v3"
 scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
@@ -27,48 +27,48 @@ scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 
 ##################################################################
 
-smile_replies = [
-    "😍",
-    "😊",
-    "😃",
-    "😁",
-    "❤️",
-    "💞",
-    "💖",
-    "💫",
-    "🎶",
-    "🙏",
-    "💃",
-    "😻",
-    "👀",
-    "❄️",
-    "🐥",
-    "🌷",
-    "🌹",
-    "🍁",
-    "🌺",
-    "🌲",
-    "🌝",
-    "💝",
-    "🎁",
-    "🔔",
-    "📣",
-    "🔈",
-    "🎭",
-    "💎",
-    "🔥",
-    "👋",
-    "👌",
-    "😽",
-    "🌟",
-    "💘",
-    "💗",
-    "😁",
-    "🍀",
-    "🌼",
-    "💐",
-    "🌞"
-]
+# smile_replies = [
+#     "😍",
+#     "😊",
+#     "😃",
+#     "😁",
+#     "❤️",
+#     "💞",
+#     "💖",
+#     "💫",
+#     "🎶",
+#     "🙏",
+#     "💃",
+#     "😻",
+#     "👀",
+#     "❄️",
+#     "🐥",
+#     "🌷",
+#     "🌹",
+#     "🍁",
+#     "🌺",
+#     "🌲",
+#     "🌝",
+#     "💝",
+#     "🎁",
+#     "🔔",
+#     "📣",
+#     "🔈",
+#     "🎭",
+#     "💎",
+#     "🔥",
+#     "👋",
+#     "👌",
+#     "😽",
+#     "🌟",
+#     "💘",
+#     "💗",
+#     "😁",
+#     "🍀",
+#     "🌼",
+#     "💐",
+#     "🌞"
+# ]
 
 
 
@@ -345,27 +345,28 @@ def main(argv):
         random_support_replies_4 = randint(0,19)
         random_support_replies_5 = randint(0,19)
 
-        ## Smiles 
-        my_smile_num = 0
-        # mid smiles
-        mid_smile_reply = ""
-        mid_smile_num = randint(1,maxsmiles)
-        while my_smile_num < mid_smile_num:
-            random_smile_replies = randint(0,39)
-            mid_smile_reply += smile_replies[random_smile_replies]
-            my_smile_num = my_smile_num + 1
+        # ## Smiles 
+        # my_smile_num = 0
+        # # mid smiles
+        # mid_smile_reply = ""
+        # mid_smile_num = randint(1,maxsmiles)
+        # while my_smile_num < mid_smile_num:
+        #     random_smile_replies = randint(0,39)
+        #     mid_smile_reply += smile_replies[random_smile_replies]
+        #     my_smile_num = my_smile_num + 1
 
-        my_smile_num = 0
-        # end smiles
-        end_smile_reply = ""
-        end_smile_num = randint(1,maxsmiles)
-        while my_smile_num < end_smile_num:
-            random_smile_replies = randint(0,39)
-            end_smile_reply += smile_replies[random_smile_replies]
-            my_smile_num = my_smile_num + 1
+        # my_smile_num = 0
+        # # end smiles
+        # end_smile_reply = ""
+        # end_smile_num = randint(1,maxsmiles)
+        # while my_smile_num < end_smile_num:
+        #     random_smile_replies = randint(0,39)
+        #     end_smile_reply += smile_replies[random_smile_replies]
+        #     my_smile_num = my_smile_num + 1
 
 
-        my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " + mid_smile_reply + " " + support_replies_2[random_support_replies_2] + " " + support_replies_3[random_support_replies_3] + " " + support_replies_4[random_support_replies_4] + " " + support_replies_5[random_support_replies_5] + " " + end_smile_reply
+        # my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " + mid_smile_reply + " " + support_replies_2[random_support_replies_2] + " " + support_replies_3[random_support_replies_3] + " " + support_replies_4[random_support_replies_4] + " " + support_replies_5[random_support_replies_5] + " " + end_smile_reply
+        my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " + support_replies_2[random_support_replies_2] + " " + support_replies_3[random_support_replies_3] + " " + support_replies_4[random_support_replies_4] + " " + support_replies_5[random_support_replies_5]
         print("my_replies is : " + my_replies)
 
         ## commenting on the channel
