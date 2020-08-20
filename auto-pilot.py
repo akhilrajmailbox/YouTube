@@ -526,6 +526,8 @@ def main(argv):
                 )
                 print("Removing subscription ID : " + subremove)
                 subremove_response = subremove_request.execute()
+        else:
+            print("Your Channel : " + mychannelid + " subscribed to " + str(mysubcount))
 
 ##################################################################
 
@@ -563,7 +565,6 @@ def main(argv):
                 )
             )
         )
-        mycmnt_response = mycmnt_request.execute()
 
         ## subscribe
         subadd_request = youtube.subscriptions().insert(
@@ -580,6 +581,7 @@ def main(argv):
         try:
             print(mychannelid + " Going to subscribe the channel : " + subchannelid + " by commenting on the video : " + ytvid_id)
             subadd_response = subadd_request.execute()
+            mycmnt_response = mycmnt_request.execute()
         except:
             print("An exception occurred, " + mychannelid + " Not able to subscribe the channel : " + subchannelid + " but commented on the video : " + ytvid_id)
 
