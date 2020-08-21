@@ -11,68 +11,21 @@ from datetime import datetime, timedelta, timezone
 
 
 ##################################################################
-params_validation="\n\npython auto-pilot.py -v <ytvid_id> -u <google user>\n google user : choose between 0 and 9\n"
+params_validation="\n\npython auto-ramdom.py -v <ytvid_id> -u <google user>\n google user : choose between 0 and 9\n"
+reply_to_comment = False
 
+loopsub_maxcount = 10
+cmnt_maxresult = 20
+cmnt_maxrespond = 5
 targetsub_maxcount = 10000
 targetsub_mincount = 50
 mysub_maxcount = 500
 mysub_delcount = 50
-cmnt_maxresult = 20
-cmnt_maxrespond = 5
 
-# maxsmiles = 3
-waittime = 120
+waittime = 240
 api_service_name = "youtube"
 api_version = "v3"
 scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
-
-
-
-# ##################################################################
-
-# smile_replies = [
-#     "😍",
-#     "😊",
-#     "😃",
-#     "😁",
-#     "❤️",
-#     "💞",
-#     "💖",
-#     "💫",
-#     "🎶",
-#     "🙏",
-#     "💃",
-#     "😻",
-#     "👀",
-#     "❄️",
-#     "🐥",
-#     "🌷",
-#     "🌹",
-#     "🍁",
-#     "🌺",
-#     "🌲",
-#     "🌝",
-#     "💝",
-#     "🎁",
-#     "🔔",
-#     "📣",
-#     "🔈",
-#     "🎭",
-#     "💎",
-#     "🔥",
-#     "👋",
-#     "👌",
-#     "😽",
-#     "🌟",
-#     "💘",
-#     "💗",
-#     "😁",
-#     "🍀",
-#     "🌼",
-#     "💐",
-#     "🌞"
-# ]
-
 
 
 ##################################################################
@@ -266,153 +219,6 @@ friends_replies_4 = [
 ]
 
 
-##################################################################
-
-sub_replies_0 = [
-    "വീ_ഡിയോ",
-    "ഈവീ_ഡിയോ",
-    "വീഡിയോ_സ്",
-    "ചാനൽ_",
-    "_വീ_ഡിയോ",
-    "ഈവീഡി_യോ_സ്",
-    "കോൺടെ_ന്റ്",
-    "_ഈവീ_ഡി_യോ",
-    " ചാന_ൽ_",
-    "വിഡിയോസൊ_ക്കെ",
-    "ടോപ്പി_ക്ക്",
-    "വീ_ഡിയോ_സ്",
-    "ഇ_വീഡിയോ_",
-    "ദൃശ്യ സൂ_പ്പറാണ്,",
-    "വീഡിയോ_ടോപ്പി_ക്ക്",
-    "_വീ_ഡിയോയോ",
-    "ഇ_ദൃശ്യ_",
-    "വിഡിയോ_യോ_",
-    "ഈ_വീ_ഡിയോ_",
-    "തന്റെ_വീഡിയോ_"
-]
-
-
-sub_replies_1 = [
-    "കൊ_ള്ളാട്ടോ,",
-    "നന്നാ_യിട്ടുണ്ടെ",
-    "അടിപൊളി_",
-    "സൂപ്പർ_",
-    "കി_ടു",
-    "അടി_പൊളിയായി",
-    "കൊള്ളാ_മെ,",
-    "കൊള്ളാ_ട്ടോ_",
-    "കൊ_ള്ളാമല്ലൊ",
-    "കണ്ടൂ_ട്ടോ",
-    "കൊള്ളാമ_ല്ലോ",
-    "സൂപ്പ_റായി",
-    "സൂപ്പര്_,",
-    "സൂ_പ്പറാണ്",
-    "_സൂപ്പറാ_ണ്",
-    "കൊ_ള്ളാ",
-    "കൊ_ള്ളാ_മേ,",
-    "കിടു_ക്കി_",
-    "കിടുക്കിയിട്ടു_ണ്ടേ",
-    "സൂപ്പ_റായിട്ടു_ഉണ്ടേ"
-]
-
-
-sub_replies_2 = [
-    "_ഞാൻ",
-    "കൂ_ട്ട്",
-    "ഞാനും_",
-    "കൂ_ട്ടായി",
-    "ഞ_നും",
-    "ഫ്ര_ണ്ട്",
-    "പുതി_യ_കൂട്ട്",
-    "ഞാ_ന്_കൂട്ടായിട്ടു",
-    "ഞാന_ങ്,",
-    "ഞാ_ൻ_",
-    "_ഞാനും_",
-    "നമ്മ_ൾ",
-    "നമ്മ_ളും",
-    "_നമ്മൽ_",
-    "ന_മ്മള്",
-    "ഞാനി_ങ്ങു",
-    "ഞാൻ_ഓടി_",
-    "ഞാനും_കൂട്ടാ_യിട്ടു",
-    "ഞാ_നങ്_",
-    "ഞാ_ൻ_കൂട്ട്കൂടാൻ_"
-]
-
-
-sub_replies_3 = [
-    "_എത്തീ",
-    "കൂ_ടി",
-    "വന്നു_",
-    "വന്നേ_,",
-    "എ_ത്തിയെ",
-    "ആയി_ട്ടുണ്ട്",
-    "എത്തി_പ്പോയി,",
-    "വന്നൂട്ടോ_",
-    "വ_ന്നേ_",
-    "കൂ_ട്ടാ_യ്",
-    "എ_ത്തി_പ്പോയി",
-    "_എത്തി_ട്ടോ,",
-    "ക_മ്പനി_ആയി",
-    "എ_ത്തി_പ്പോയെന്നേ",
-    "വന്നേ_ന്നേ,",
-    "പോന്നു_",
-    "എത്തി_ട്ടുണ്ടേ",
-    "എത്തി_ട്ടൊന്നെ,",
-    "കൂ_ടായിട്ടു_ണ്ടെ",
-    "_ഓടി_എത്തിയെ"
-]
-
-
-sub_replies_4 = [
-    "_അങ്ങോട്ടും",
-    "എ_ന്റെ_എടുത്തേക്കും",
-    "ഇങ്ങു_",
-    "അങ്ങ്_",
-    "തി_രിച്ചു",
-    "അ_ങ്ങോട്ടുമ്മ്",
-    "അ_ങ്ങോ_ട്ടു",
-    "_അങ്ങും_",
-    "_എന്റെ_ചാനലിലും",
-    "_തിരി_ച്ചും",
-    "അ_ങ്ങോട്ടെ_ക്കും",
-    "_എന്റെ_ചാനലിൽ",
-    "തി_രിച്ചും_",
-    "തിരി_ചു",
-    "അ_ങ്ങ്ങ്ങ്",
-    "_അ_ങ്ങ്ങ്ങ്",
-    "തി_രിച്ചു_വേഗം",
-    "തിരി_ച്ചും_കൂട്ടായിട്ടു",
-    "എ_ന്റെ_yt_ചാനലിൽ",
-    "തി_രിച്ചു_വേഗം"
-]
-
-
-sub_replies_5 = [
-    "_വരണേ",
-    "വ_രൂ",
-    "വാ_",
-    "പോ_രെ",
-    "വാ_യോ",
-    "പൊരേ_റ്റൊന്നെ",
-    "പോര്_",
-    "പോരെ_ന്ന്",
-    "_പോരെ_",
-    "പോ_രെ_ന്ന്",
-    "വരാ_മോ?",
-    "വാ_രാണാ_റ്റോ",
-    "പ്രേതീഷി_ക്കുന്നു",
-    "വരുമെ_ന്ന്",
-    "പോ_രെന്നെ_",
-    "പോരാ_മോ?",
-    "പോരേരേ_",
-    "വരാ_മോ_വേഗം?",
-    "_വര_ണേ?",
-    "വരുന്നേ_"
-]
-
-
-
 
 
 
@@ -467,6 +273,7 @@ def main(argv):
     waittime_sec = waittime * 60
     subscribe_count = 0
     comment_count = 0
+    loopsub_count = 0
     print("Going to run the loop with waittime = " + str(waittime) + " min (" + str(waittime_sec) + " sec)")
 
     ## Get channel ID
@@ -545,16 +352,23 @@ def main(argv):
             getsub_response = getsub_request.execute()
             subchannelid = getsub_response["items"][0]["snippet"]["channelId"]
 
-            random_sub_replies_0 = randint(0,19)
-            random_sub_replies_1 = randint(0,19)
-            random_sub_replies_2 = randint(0,19)
-            random_sub_replies_3 = randint(0,19)
-            random_sub_replies_4 = randint(0,19)
-            random_sub_replies_5 = randint(0,19)
+
+            min_edge = cmnt_maxresult/2
+            max_edge = cmnt_maxresult-1
+            random_replies= randint(min_edge,max_edge)
 
 
-            my_sub_replies = sub_replies_0[random_sub_replies_0] + " " + sub_replies_1[random_sub_replies_1] + " " + sub_replies_2[random_sub_replies_2] + " " + sub_replies_3[random_sub_replies_3] + " " + sub_replies_4[random_sub_replies_4] + " " + sub_replies_5[random_sub_replies_5]
-            print("my_sub_replies is : " + my_sub_replies)
+            ## Check the non-spam comments
+            cpcmnt_request = youtube.commentThreads().list(
+                part="snippet,replies",
+                maxResults=cmnt_maxresult,
+                order="time",
+                videoId=ytvid_id
+            )
+            cpcmnt_response = cpcmnt_request.execute()
+
+            my_sub_cmnt = cpcmnt_response["items"][random_replies]["snippet"]["topLevelComment"]["snippet"]["textOriginal"]
+            print("my_sub_cmnt is : " + my_sub_cmnt)
 
             ## commenting on the channel
             mycmnt_request = youtube.commentThreads().insert(
@@ -564,7 +378,7 @@ def main(argv):
                         videoId=ytvid_id,
                         topLevelComment=dict(
                             snippet=dict(
-                                textOriginal=my_sub_replies
+                                textOriginal=my_sub_cmnt
                             )
                         )
                     )
@@ -605,88 +419,101 @@ def main(argv):
             )
             cmnt_response = cmnt_request.execute()
 
-            for item in cmnt_response["items"][2:cmnt_maxrespond]:
 
-                random_support_replies_0 = randint(0,19)
-                random_support_replies_1 = randint(0,19)
-                random_support_replies_2 = randint(0,19)
-                random_friends_replies_0 = randint(0,19)
-                random_friends_replies_1 = randint(0,19)
-                random_friends_replies_2 = randint(0,19)
-                random_friends_replies_3 = randint(0,19)
-                random_friends_replies_4 = randint(0,19)
+            if reply_to_comment == True:
+                for item in cmnt_response["items"][2:cmnt_maxrespond]:
+                    random_support_replies_0 = randint(0,19)
+                    random_support_replies_1 = randint(0,19)
+                    random_support_replies_2 = randint(0,19)
+                    random_friends_replies_0 = randint(0,19)
+                    random_friends_replies_1 = randint(0,19)
+                    random_friends_replies_2 = randint(0,19)
+                    random_friends_replies_3 = randint(0,19)
+                    random_friends_replies_4 = randint(0,19)
 
-                # ## Smiles 
-                # my_smile_num = 0
-                # # mid smiles
-                # mid_smile_reply = ""
-                # mid_smile_num = randint(1,maxsmiles)
-                # while my_smile_num < mid_smile_num:
-                #     random_smile_replies = randint(0,39)
-                #     mid_smile_reply += smile_replies[random_smile_replies]
-                #     my_smile_num = my_smile_num + 1
+                    # ## Smiles 
+                    # my_smile_num = 0
+                    # # mid smiles
+                    # mid_smile_reply = ""
+                    # mid_smile_num = randint(1,maxsmiles)
+                    # while my_smile_num < mid_smile_num:
+                    #     random_smile_replies = randint(0,39)
+                    #     mid_smile_reply += smile_replies[random_smile_replies]
+                    #     my_smile_num = my_smile_num + 1
 
-                # my_smile_num = 0
-                # # end smiles
-                # end_smile_reply = ""
-                # end_smile_num = randint(1,maxsmiles)
-                # while my_smile_num < end_smile_num:
-                #     random_smile_replies = randint(0,39)
-                #     end_smile_reply += smile_replies[random_smile_replies]
-                #     my_smile_num = my_smile_num + 1
+                    # my_smile_num = 0
+                    # # end smiles
+                    # end_smile_reply = ""
+                    # end_smile_num = randint(1,maxsmiles)
+                    # while my_smile_num < end_smile_num:
+                    #     random_smile_replies = randint(0,39)
+                    #     end_smile_reply += smile_replies[random_smile_replies]
+                    #     my_smile_num = my_smile_num + 1
 
-                # my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + mid_smile_reply + " " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4] + end_smile_reply
-                my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + " " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
+                    # my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + ", " + mid_smile_reply + " " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4] + end_smile_reply
+                    my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + " " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
 
-                cmnt_commentid = item["id"];
-                cmnt_commentown = item["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
+                    cmnt_commentid = item["id"];
+                    cmnt_commentown = item["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
 
 
-                ## vaidate reply
-                reply_check = "null"
-                if "replies" in item:
-                    replies_data = item["replies"];
-                    for reply in replies_data["comments"]:
-                        reply_check = "null"
-                        reply_own = reply["snippet"]["authorChannelId"]["value"]
-                        # print(reply_own)
-                        contain = (reply_own in mychannelid)
-                        if(contain):
-                            print(mychannelid + " already response to the comment")
-                            reply_check = "found"
-                            break;
-                        else:
-                            print(mychannelid + " going to respond to the latest comment")
+                    ## vaidate reply
+                    reply_check = "null"
+                    if "replies" in item:
+                        replies_data = item["replies"];
+                        for reply in replies_data["comments"]:
+                            reply_check = "null"
+                            reply_own = reply["snippet"]["authorChannelId"]["value"]
+                            # print(reply_own)
+                            contain = (reply_own in mychannelid)
+                            if(contain):
+                                print(mychannelid + " already response to the comment")
+                                reply_check = "found"
+                                break;
+                            else:
+                                print(mychannelid + " going to respond to the latest comment")
+                    else:
+                        print("No one Replied to This Comment yet...!")
+
+
+                    ## reply to the comment
+                    if reply_check == 'null':
+                        comment_count = comment_count + 1
+                        print("Replying to Comment : " + str(comment_count))
+                        reply = youtube.comments().insert(
+                            part="snippet",
+                            body=dict(
+                            snippet=dict(
+                                parentId=cmnt_commentid,
+                                textOriginal=my_replies
+                            )
+                            )
+                        )
+                        reply_response = reply.execute()
+                        print("Successfully Send the reply to " + cmnt_commentown)
+
+                    print("Sleeping for 10 sec")
+                    time.sleep(10)
+
+                print("Total Reply in this loop : " + str(comment_count))
+
+                print("loopsub_count doesn't have priority because reply_to_comment == True")
+                now = datetime.now(timezone.utc)
+                nextexe = (now + timedelta(minutes=waittime)).astimezone()
+                print("Sleeping for " + str(waittime) + " min (" + str(waittime_sec) + " sec). Next exe at : {nextexe:%I:%M %p}".format(**vars()))
+                time.sleep(waittime_sec)
+            else:
+                if loopsub_count > loopsub_maxcount:
+                    print("unset loopsub_count to 0")
+                    loopsub_count = 0
+                    now = datetime.now(timezone.utc)
+                    nextexe = (now + timedelta(minutes=waittime)).astimezone()
+                    print("Sleeping for " + str(waittime) + " min (" + str(waittime_sec) + " sec). Next exe at : {nextexe:%I:%M %p}".format(**vars()))
+                    time.sleep(waittime_sec)
                 else:
-                    print("No one Replied to This Comment yet...!")
-
-
-                ## reply to the comment
-                if reply_check == 'null':
-                    comment_count = comment_count + 1
-                    print("Replying to Comment : " + str(comment_count))
-                    reply = youtube.comments().insert(
-                        part="snippet",
-                        body=dict(
-                        snippet=dict(
-                            parentId=cmnt_commentid,
-                            textOriginal=my_replies
-                        )
-                        )
-                    )
-                    reply_response = reply.execute()
-                    print("Successfully Send the reply to " + cmnt_commentown)
-
-                print("Sleeping for 10 sec")
-                time.sleep(10)
-
-
-            print("Total Reply in this loop : " + str(comment_count))
-
-            now = datetime.now(timezone.utc)
-            nextexe = (now + timedelta(minutes=waittime)).astimezone()
-            print("Sleeping for " + str(waittime) + " min (" + str(waittime_sec) + " sec). Next exe at : {nextexe:%I:%M %p}".format(**vars()))
-            time.sleep(waittime_sec)
+                    loopsub_count = loopsub_count + 1
+                    print("loopsub_count changed to : " + str(loopsub_count) + " sleeping for 60 Sec")
+                    time.sleep(60)
 
 
 
@@ -694,10 +521,9 @@ def main(argv):
 
             for cmntitem in cmnt_response["items"][1:cmnt_maxresult]:
                 cmnt_commentownid = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorChannelId"]["value"]
+                cmnt_commentown = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
 
-                if cmnt_commentownid == mychannelid:
-                    print("This is my channel ID, Looking for another channel ID")
-                else:
+                if cmnt_commentownid != mychannelid:
                     ## Check Subscribers Count
                     sub_request = youtube.channels().list(
                         part="statistics",
@@ -707,11 +533,7 @@ def main(argv):
                     sub_response_status = sub_response["items"][0]["statistics"]["hiddenSubscriberCount"]
                     sub_count = sub_response["items"][0]["statistics"]["subscriberCount"]
 
-                    if int(sub_count) < targetsub_mincount:
-                        print("Subscribers count is less than " + str(targetsub_mincount) + " for channel : " + cmnt_commentown)
-                    elif int(sub_count) > targetsub_maxcount:
-                        print("Subscribers count is greater than " + str(targetsub_maxcount) + " for channel : " + cmnt_commentown)
-                    else:
+                    if int(sub_count) > targetsub_mincount and int(sub_count) < targetsub_maxcount:
                         print(cmnt_commentown + "Has Subscribers count : " + sub_count)
 
                         ## Check Subscription
@@ -722,9 +544,7 @@ def main(argv):
                         )
                         subcheck_response = subcheck_request.execute()
 
-                        if len(subcheck_response["items"]) >= 1:
-                            print(mychannelid + " Already Subscribed to this channel")
-                        else:
+                        if len(subcheck_response["items"]) < 1:
                             ## Take Uploads Playlist ID
                             content_request = youtube.channels().list(
                                 part="contentDetails",
@@ -732,9 +552,7 @@ def main(argv):
                             )
                             content_response = content_request.execute()
 
-                            if len(content_response["items"]) < 1:
-                                print(cmnt_commentownid + " has no playlist")
-                            else:
+                            if len(content_response["items"]) >= 1:
                                 uploads_id = content_response["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
                                 print("uploads Playlist's ID :" + uploads_id)
 
@@ -746,9 +564,7 @@ def main(argv):
                                 )
                                 plvid_response = plvid_request.execute()
 
-                                if len(plvid_response["items"]) < 1:
-                                    print(cmnt_commentownid + " Hasn't any video")
-                                else:
+                                if len(plvid_response["items"]) >= 1:
                                     ytvid_id = plvid_response["items"][0]["snippet"]["resourceId"]["videoId"]
                                     ## Validate comments are turned on or off
                                     cmntoffon_request = youtube.videos().list(
@@ -758,13 +574,9 @@ def main(argv):
                                     cmntoffon_response = cmntoffon_request.execute()
 
                                     cmntkey_to_ckeck = 'commentCount'
-                                    if cmntkey_to_ckeck not in cmntoffon_response['items'][0]['statistics']:
-                                        print("Comments are turned off for this video : " + ytvid_id)
-                                    else:
+                                    if cmntkey_to_ckeck in cmntoffon_response['items'][0]['statistics']:
                                         cmntcountcheck = cmntoffon_response["items"][0]["statistics"]["commentCount"]
-                                        if cmntcountcheck == 0:
-                                            print("Comments are turned off for this video : " + ytvid_id)
-                                        else:
+                                        if cmntcountcheck != 0:
                                             ## Check Comments length
                                             newcmnt_request = youtube.commentThreads().list(
                                                 part="snippet,replies",
@@ -775,9 +587,7 @@ def main(argv):
                                             newcmnt_response = newcmnt_request.execute()
 
                                             cmnt_count = len(newcmnt_response["items"])
-                                            if cmnt_count < cmnt_maxresult:
-                                                print("The new video has not enough comments : " + str(cmnt_count))
-                                            else:
+                                            if cmnt_count >= cmnt_maxresult:
                                                 print("Previous Video ID : " + prev_ytvid_id + "\n")
                                                 print("The new video : " + ytvid_id + " has " + str(cmnt_count) + " comments \n")
                                                 break
@@ -789,3 +599,4 @@ def main(argv):
 
 if __name__ == "__main__":
     main(sys.argv[1:])
+

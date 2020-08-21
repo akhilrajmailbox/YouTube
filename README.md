@@ -93,7 +93,7 @@ python auto-sub.py -v <ytvid_id> -u <google_user>
 
 
 
-## Auto Pilot for subscribe on Others Channel and reply to comments
+## Auto Pilot for subscribe on Others Channel with pre defined messages and reply to comments
 
 **Note :** Update the following in the script before running
 
@@ -114,6 +114,63 @@ python auto-sub.py -v <ytvid_id> -u <google_user>
 ```bash
 python auto-pilot.py -v <ytvid_id> -u <google_user>
 ```
+
+
+
+
+## Auto Pilot for subscribe on Others Channel with Ramdom messages and reply to comments
+
+**Note :** Update the following in the script before running
+
+* `targetsub_maxcount` : maximum subscribers count can be for the channel going to comment (by defaut it is 10000)
+* `targetsub_mincount` : minimum subscribers count can be for the channel going to comment (by defaut it is 50)
+* `mysub_maxcount` : maximum subscribed channels by my channel (by defaut it is 500)
+* `mysub_delcount` : minimum subscribed channels by my channel (by defaut it is 50)
+* `cmnt_maxresult` : maximum result of comment (by defaut it is 20)
+* `cmnt_maxrespond` : maximum respond comment (by defaut it is 5)
+* `loopsub_maxcount` : number of subscription in a single loop before waittime (by defaut it is 5)
+* `waittime` : time to wait before going to next video for comment (by defaut it is 120 mins)
+* `reply_to_comment` : Enable this for reply to comment (by default it is `False`)
+
+
+**Note :** Run the Script with following parameters
+
+* `ytvid_id` : your video ID
+* `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
+
+```bash
+python auto-random.py -v <ytvid_id> -u <google_user>
+```
+
+
+
+
+## Get the Video Url for New comments and Subscribe
+
+**Note :** Update the following in the script before running
+
+* `targetsub_maxcount` : maximum subscribers count can be for the channel going to comment (by defaut it is 10000)
+* `targetsub_mincount` : minimum subscribers count can be for the channel going to comment (by defaut it is 50)
+* `mysub_maxcount` : maximum subscribed channels by my channel (by defaut it is 500)
+* `mysub_delcount` : minimum subscribed channels by my channel (by defaut it is 50)
+* `cmnt_maxresult` : maximum result of comment (by defaut it is 20)
+* `cmnt_maxrespond` : maximum respond comment (by defaut it is 5)
+
+**Note :** Run the Script with following parameters
+
+* `ytvid_id` : your video ID
+* `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
+* `number of result` : Number of Result you need from this Script in a Single run
+
+
+```bash
+python get-url.py -v <ytvid_id> -u <google user> -c <number of result>
+```
+
+
+
+
+
 
 
 
