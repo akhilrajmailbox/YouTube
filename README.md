@@ -130,7 +130,7 @@ python auto-sub-precmnt-reply.py -v <ytvid_id> -u <google_user>
 * `cmnt_maxrespond` : maximum respond comment (by defaut it is 10)
 * `loopsub_maxcount` : number of subscription in a single loop before waittime (by defaut it is 10)
 * `waittime` : time to wait before going to next video for comment (by defaut it is 240 mins)
-* `reply_to_comment` : Enable this for reply to comment, If enabled, reply to comments when `loopsub_count = 0` (by default it is `False`)
+* `reply_to_comment` : Enable this for reply to comment, If enabled, reply to comments when `loopsub_count = 0` (by default it is `True`)
 * `subcmnt_random` : Enable this for use Random comments otherwise it will choose predefined comments (by default it is `True`)
 
 

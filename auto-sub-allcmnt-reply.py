@@ -12,7 +12,7 @@ from datetime import datetime, timedelta, timezone
 
 ##################################################################
 params_validation="\n\npython auto-sub-allcmnt-reply.py -v <ytvid_id> -u <google user>\n google user : choose between 0 and 9\n"
-reply_to_comment = False
+reply_to_comment = True
 subcmnt_random = True
 
 loopsub_maxcount = 10
