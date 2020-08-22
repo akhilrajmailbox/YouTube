@@ -499,22 +499,26 @@ def main(argv):
             subchannelid = getsub_response["items"][0]["snippet"]["channelId"]
 
 
+            ## Check the non-spam comments
+            cmnt_request = youtube.commentThreads().list(
+                part="snippet,replies",
+                maxResults=50,
+                order="time",
+                videoId=ytvid_id
+            )
+            cmnt_response = cmnt_request.execute()
+
+
             if subcmnt_random == True:
-                min_edge = cmnt_maxresult/2
-                max_edge = cmnt_maxresult-1
-                random_replies= randint(min_edge,max_edge)
 
-                ## Check the non-spam comments
-                cpcmnt_request = youtube.commentThreads().list(
-                    part="snippet,replies",
-                    maxResults=cmnt_maxresult,
-                    order="time",
-                    videoId=ytvid_id
-                )
-                cpcmnt_response = cpcmnt_request.execute()
+                cpcmnt_count = len(cmnt_response["items"])
+                min_edge = cpcmnt_count/2
+                max_edge = cpcmnt_count-2
+                random_replies = randint(min_edge,max_edge)
 
-                my_sub_cmnt = cpcmnt_response["items"][random_replies]["snippet"]["topLevelComment"]["snippet"]["textOriginal"]
-                print("Random  my_sub_cmnt is : " + my_sub_cmnt)
+                my_sub_cmnt = cmnt_response["items"][random_replies]["snippet"]["topLevelComment"]["snippet"]["textOriginal"]
+                print("Random ( " + random_replies + " ) my_sub_cmnt is : " + my_sub_cmnt)
+
             elif subcmnt_random == False:
                 random_sub_replies_0 = randint(0,19)
                 random_sub_replies_1 = randint(0,19)
@@ -525,6 +529,7 @@ def main(argv):
 
                 my_sub_cmnt = sub_replies_0[random_sub_replies_0] + " " + sub_replies_1[random_sub_replies_1] + " " + sub_replies_2[random_sub_replies_2] + " " + sub_replies_3[random_sub_replies_3] + " " + sub_replies_4[random_sub_replies_4] + " " + sub_replies_5[random_sub_replies_5]
                 print("Predefined my_sub_cmnt is : " + my_sub_cmnt)
+
             else:
                 print("subcmnt_random need to pass (True or False)")
                 sys.exit(2)
@@ -569,16 +574,6 @@ def main(argv):
             
 
     ##################################################################
-
-            ## Check the non-spam comments
-            cmnt_request = youtube.commentThreads().list(
-                part="snippet,replies",
-                maxResults=cmnt_maxresult,
-                order="time",
-                videoId=ytvid_id
-            )
-            cmnt_response = cmnt_request.execute()
-
 
             if reply_to_comment == True:
                 if loopsub_count == 0:
@@ -716,7 +711,7 @@ def main(argv):
                                             ## Check Comments length
                                             newcmnt_request = youtube.commentThreads().list(
                                                 part="snippet,replies",
-                                                maxResults=cmnt_maxresult,
+                                                maxResults=50,
                                                 order="time",
                                                 videoId=ytvid_id
                                             )

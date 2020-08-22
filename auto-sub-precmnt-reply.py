@@ -599,7 +599,7 @@ def main(argv):
             ## Check the non-spam comments
             cmnt_request = youtube.commentThreads().list(
                 part="snippet,replies",
-                maxResults=cmnt_maxresult,
+                maxResults=50,
                 order="time",
                 videoId=ytvid_id
             )
@@ -768,7 +768,7 @@ def main(argv):
                                             ## Check Comments length
                                             newcmnt_request = youtube.commentThreads().list(
                                                 part="snippet,replies",
-                                                maxResults=cmnt_maxresult,
+                                                maxResults=50,
                                                 order="time",
                                                 videoId=ytvid_id
                                             )
