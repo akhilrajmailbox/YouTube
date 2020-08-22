@@ -12,9 +12,9 @@ from datetime import datetime, timedelta, timezone
 
 ##################################################################
 params_validation="\n\npython get-url.py -v <ytvid_id> -u <google user> -c <number of result>\n google user : choose between 0 and 9\n"
+subcmnt_random = False
 
-cmnt_maxresult = 50
-cmnt_minresult = 30
+cmnt_maxresult = 20
 targetsub_maxcount = 10000
 targetsub_mincount = 50
 mysub_maxcount = 500
@@ -502,22 +502,42 @@ def main(argv):
             getsub_response = getsub_request.execute()
             subchannelid = getsub_response["items"][0]["snippet"]["channelId"]
 
-            random_sub_replies_0 = randint(0,19)
-            random_sub_replies_1 = randint(0,19)
-            random_sub_replies_2 = randint(0,19)
-            random_sub_replies_3 = randint(0,19)
-            random_sub_replies_4 = randint(0,19)
-            random_sub_replies_5 = randint(0,19)
-
-
             subscribe_count = subscribe_count + 1
-            my_sub_replies = sub_replies_0[random_sub_replies_0] + " " + sub_replies_1[random_sub_replies_1] + " " + sub_replies_2[random_sub_replies_2] + " " + sub_replies_3[random_sub_replies_3] + " " + sub_replies_4[random_sub_replies_4] + " " + sub_replies_5[random_sub_replies_5]
+
+            if subcmnt_random == True:
+                min_edge = cmnt_maxresult/2
+                max_edge = cmnt_maxresult-1
+                random_replies= randint(min_edge,max_edge)
+
+                ## Check the non-spam comments
+                cpcmnt_request = youtube.commentThreads().list(
+                    part="snippet,replies",
+                    maxResults=cmnt_maxresult,
+                    order="time",
+                    videoId=ytvid_id
+                )
+                cpcmnt_response = cpcmnt_request.execute()
+
+                my_sub_cmnt = cpcmnt_response["items"][random_replies]["snippet"]["topLevelComment"]["snippet"]["textOriginal"]
+
+            elif subcmnt_random == False:
+                random_sub_replies_0 = randint(0,19)
+                random_sub_replies_1 = randint(0,19)
+                random_sub_replies_2 = randint(0,19)
+                random_sub_replies_3 = randint(0,19)
+                random_sub_replies_4 = randint(0,19)
+                random_sub_replies_5 = randint(0,19)
+
+                my_sub_cmnt = sub_replies_0[random_sub_replies_0] + " " + sub_replies_1[random_sub_replies_1] + " " + sub_replies_2[random_sub_replies_2] + " " + sub_replies_3[random_sub_replies_3] + " " + sub_replies_4[random_sub_replies_4] + " " + sub_replies_5[random_sub_replies_5]
+
+            else:
+                print("subcmnt_random need to pass (True or False)")
+                sys.exit(2)
+            
             print("#######################################################################################################################")
             print("Total Subscribed Channel in this loop : " + str(subscribe_count))
             print("\nVideo url :  https://www.youtube.com/watch?v=" + ytvid_id)
-            print("\nComment : " + my_sub_replies)
-
-
+            print("\nComment : " + my_sub_cmnt)
 
     ##################################################################
 

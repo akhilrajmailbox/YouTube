@@ -112,13 +112,13 @@ python auto-sub.py -v <ytvid_id> -u <google_user>
 * `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
 
 ```bash
-python auto-pilot.py -v <ytvid_id> -u <google_user>
+python auto-sub-precmnt-reply.py -v <ytvid_id> -u <google_user>
 ```
 
 
 
 
-## Auto Pilot for subscribe on Others Channel with Ramdom messages and reply to comments
+## Auto Pilot for subscribe on Others Channel with Ramdom / Predefined messages and reply to comments
 
 **Note :** Update the following in the script before running
 
@@ -127,10 +127,11 @@ python auto-pilot.py -v <ytvid_id> -u <google_user>
 * `mysub_maxcount` : maximum subscribed channels by my channel (by defaut it is 500)
 * `mysub_delcount` : minimum subscribed channels by my channel (by defaut it is 50)
 * `cmnt_maxresult` : maximum result of comment (by defaut it is 20)
-* `cmnt_maxrespond` : maximum respond comment (by defaut it is 5)
-* `loopsub_maxcount` : number of subscription in a single loop before waittime (by defaut it is 5)
-* `waittime` : time to wait before going to next video for comment (by defaut it is 120 mins)
-* `reply_to_comment` : Enable this for reply to comment (by default it is `False`)
+* `cmnt_maxrespond` : maximum respond comment (by defaut it is 10)
+* `loopsub_maxcount` : number of subscription in a single loop before waittime (by defaut it is 10)
+* `waittime` : time to wait before going to next video for comment (by defaut it is 240 mins)
+* `reply_to_comment` : Enable this for reply to comment, If enabled, reply to comments when `loopsub_count = 0` (by default it is `False`)
+* `subcmnt_random` : Enable this for use Random comments otherwise it will choose predefined comments (by default it is `True`)
 
 
 **Note :** Run the Script with following parameters
@@ -139,7 +140,7 @@ python auto-pilot.py -v <ytvid_id> -u <google_user>
 * `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
 
 ```bash
-python auto-random.py -v <ytvid_id> -u <google_user>
+python auto-sub-allcmnt-reply.py -v <ytvid_id> -u <google_user>
 ```
 
 
@@ -154,7 +155,8 @@ python auto-random.py -v <ytvid_id> -u <google_user>
 * `mysub_maxcount` : maximum subscribed channels by my channel (by defaut it is 500)
 * `mysub_delcount` : minimum subscribed channels by my channel (by defaut it is 50)
 * `cmnt_maxresult` : maximum result of comment (by defaut it is 20)
-* `cmnt_maxrespond` : maximum respond comment (by defaut it is 5)
+* `subcmnt_random` : Enable this for use Random comments otherwise it will choose predefined comments (by default it is `True`)
+
 
 **Note :** Run the Script with following parameters
 
@@ -207,6 +209,12 @@ screen -X -S screen_name kill
 ```
 
 
+
+### Scrolling Screen to Top
+
+Press keys Ctrl-A followed by esc
+
+scroll up and down or use up / down arrow
 
 
 

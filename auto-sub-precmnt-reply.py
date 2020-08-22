@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 
 
 ##################################################################
-params_validation="\n\npython auto-pilot.py -v <ytvid_id> -u <google user>\n google user : choose between 0 and 9\n"
+params_validation="\n\npython auto-sub-precmnt-reply.py -v <ytvid_id> -u <google user>\n google user : choose between 0 and 9\n"
 
 targetsub_maxcount = 10000
 targetsub_mincount = 50
