@@ -512,12 +512,12 @@ def main(argv):
             if subcmnt_random == True:
 
                 cpcmnt_count = len(cmnt_response["items"])
-                min_edge = cpcmnt_count/2
+                min_edge = cpcmnt_count//2
                 max_edge = cpcmnt_count-2
                 random_replies = randint(min_edge,max_edge)
 
                 my_sub_cmnt = cmnt_response["items"][random_replies]["snippet"]["topLevelComment"]["snippet"]["textOriginal"]
-                print("Random ( " + random_replies + " ) my_sub_cmnt is : " + my_sub_cmnt)
+                print("Random ( " + str(random_replies) + " ) my_sub_cmnt is : " + my_sub_cmnt)
 
             elif subcmnt_random == False:
                 random_sub_replies_0 = randint(0,19)
