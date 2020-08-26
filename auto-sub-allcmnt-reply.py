@@ -485,7 +485,10 @@ def main(argv):
 
 ##################################################################
 
-        if ytvid_id == prev_ytvid_id:
+        if not ytvid_id:
+            print("ytvid_id is empty")
+            break
+        elif ytvid_id == prev_ytvid_id:
             print("Previous Video and New Video are Same, Try to Run the Script again with new video ID having more comments")
             break
         else:
@@ -605,7 +608,7 @@ def main(argv):
                                 if(contain):
                                     print(mychannelid + " already response to the comment")
                                     reply_check = "found"
-                                    break;
+                                    break
                                 else:
                                     print(mychannelid + " going to respond to the latest comment")
                         else:
@@ -650,6 +653,7 @@ def main(argv):
 
     ##################################################################
 
+            ytvid_id = ""
             for cmntitem in cmnt_response["items"][1:cmnt_maxresult]:
                 cmnt_commentownid = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorChannelId"]["value"]
                 cmnt_commentown = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
@@ -696,29 +700,30 @@ def main(argv):
                                 plvid_response = plvid_request.execute()
 
                                 if len(plvid_response["items"]) >= 1:
-                                    ytvid_id = plvid_response["items"][0]["snippet"]["resourceId"]["videoId"]
+                                    newytvid_id = plvid_response["items"][0]["snippet"]["resourceId"]["videoId"]
                                     ## Validate comments are turned on or off
                                     cmntoffon_request = youtube.videos().list(
                                         part="statistics",
-                                        id=ytvid_id
+                                        id=newytvid_id
                                     )
                                     cmntoffon_response = cmntoffon_request.execute()
 
                                     cmntkey_to_ckeck = 'commentCount'
                                     if cmntkey_to_ckeck in cmntoffon_response['items'][0]['statistics']:
                                         cmntcountcheck = cmntoffon_response["items"][0]["statistics"]["commentCount"]
-                                        if cmntcountcheck != 0:
+                                        if cmntcountcheck != "0":
                                             ## Check Comments length
                                             newcmnt_request = youtube.commentThreads().list(
                                                 part="snippet,replies",
                                                 maxResults=50,
                                                 order="time",
-                                                videoId=ytvid_id
+                                                videoId=newytvid_id
                                             )
                                             newcmnt_response = newcmnt_request.execute()
 
                                             cmnt_count = len(newcmnt_response["items"])
                                             if cmnt_count >= cmnt_maxresult:
+                                                ytvid_id = newytvid_id
                                                 print("Previous Video ID : " + prev_ytvid_id + "\n")
                                                 print("The new video : " + ytvid_id + " has " + str(cmnt_count) + " comments \n")
                                                 break

@@ -478,7 +478,7 @@ def main(argv):
                                     print("Comments are turned off for this video : " + ytvid_id)
                                 else:
                                     cmntcountcheck = cmntoffon_response["items"][0]["statistics"]["commentCount"]
-                                    if cmntcountcheck == 0:
+                                    if cmntcountcheck == "0":
                                         print("Comments are turned off for this video : " + ytvid_id)
                                     else:
                                         ## Check Comments length
