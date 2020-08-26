@@ -11,9 +11,10 @@ from datetime import datetime, timedelta, timezone
 
 
 ##################################################################
-params_validation="\n\npython auto-sub-allcmnt-reply.py -v <ytvid_id> -u <google user>\n google user : choose between 0 and 9\n"
+params_validation="\n\n python auto-sub-allcmnt-reply.py -v <ytvid_id> -u <google user(s)>\n google user(s) : choose between 0 and 9\n"
 reply_to_comment = True
 subcmnt_random = True
+prod_service = False
 
 loopsub_maxcount = 10
 cmnt_maxresult = 20
@@ -378,7 +379,7 @@ def main(argv):
     # os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
     ytvid_id = "" # no need to change anything here
-    google_user = "" # no need to change anything here
+    google_users = "" # no need to change anything here
 
     try:
         opts, args = getopt.getopt(argv,"hv:u:")
@@ -392,7 +393,7 @@ def main(argv):
         elif opt in ("-v"):
             ytvid_id = arg
         elif opt in ("-u"):
-            google_user = arg
+            google_users = arg
 
     if ytvid_id and len(ytvid_id) >= 3:
         print ("Video ID is ", ytvid_id)
@@ -401,20 +402,76 @@ def main(argv):
         print(params_validation)
         sys.exit(2)
 
-    if google_user and len(google_user) >= 1:
-        print ("Google User is ", google_user)
+    if google_users and len(google_users) >= 1:
+        print ("Google User is ", google_users)
     else:
         print(params_validation)
         sys.exit(2)
 
-    client_secrets_file = "secrets/" + google_user + "-yt-secret.json"
 
-    # Get credentials and create an API client
-    flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
-        client_secrets_file, scopes)
-    credentials = flow.run_console()
-    youtube = googleapiclient.discovery.build(
-        api_service_name, api_version, credentials=credentials)
+    arr_google_user = google_users.split(',')
+
+    if prod_service == True:
+
+        if arr_google_user and len(arr_google_user) == 2:
+            print ("Google Users are ", arr_google_user)
+        else:
+            print(params_validation)
+            print(" prod_service has enabled so need 2 Google Users")
+            sys.exit(2)
+
+        ## First Youtube API User
+        google_user = arr_google_user[0]
+        print("google_user : " + google_user)
+        client_secrets_file = "secrets/" + google_user + "-yt-secret.json"
+
+        # Get credentials and create an API client
+        flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
+            client_secrets_file, scopes)
+        credentials = flow.run_console()
+        youtube_0 = googleapiclient.discovery.build(
+            api_service_name, api_version, credentials=credentials)
+
+        ## Second Youtube API User
+        google_user = arr_google_user[1]
+        print("google_user : " + google_user)
+        client_secrets_file = "secrets/" + google_user + "-yt-secret.json"
+
+        # Get credentials and create an API client
+        flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
+            client_secrets_file, scopes)
+        credentials = flow.run_console()
+        youtube_1 = googleapiclient.discovery.build(
+            api_service_name, api_version, credentials=credentials)
+
+        youtube_subs = youtube_0
+        youtube_cmnt = youtube_1
+        youtube_next = youtube_1
+
+    else:
+
+        if arr_google_user and len(arr_google_user) == 1:
+            print ("Google User is ", arr_google_user)
+        else:
+            print(params_validation)
+            print(" prod_service has disabled, so need only 1 Google User")
+            sys.exit(2)
+
+        google_user = arr_google_user[0]
+        print("google_user : " + google_user)
+        client_secrets_file = "secrets/" + google_user + "-yt-secret.json"
+
+        # Get credentials and create an API client
+        flow = google_auth_oauthlib.flow.InstalledAppFlow.from_client_secrets_file(
+            client_secrets_file, scopes)
+        credentials = flow.run_console()
+        youtube = googleapiclient.discovery.build(
+            api_service_name, api_version, credentials=credentials)
+            
+        youtube_subs = youtube
+        youtube_cmnt = youtube
+        youtube_next = youtube
+
 
     waittime_sec = waittime * 60
     subscribe_count = 0
@@ -423,7 +480,7 @@ def main(argv):
     print("Going to run the loop with waittime = " + str(waittime) + " min (" + str(waittime_sec) + " sec)")
 
     ## Get channel ID
-    mychannel_request = youtube.channels().list(
+    mychannel_request = youtube_subs.channels().list(
         part="statistics",
         mine=True
     )
@@ -435,7 +492,7 @@ def main(argv):
 ##################################################################
     while 1:
         ## Check Subscriber Count
-        checksubdel_request = youtube.subscriptions().list(
+        checksubdel_request = youtube_subs.subscriptions().list(
             part="snippet",
             maxResults=50,
             mine=True,
@@ -453,7 +510,7 @@ def main(argv):
             subdel_pagetoken = ""
 
             while 1:
-                subdel_request = youtube.subscriptions().list(
+                subdel_request = youtube_subs.subscriptions().list(
                     part="snippet",
                     maxResults=50,
                     mine=True,
@@ -475,7 +532,7 @@ def main(argv):
             print("Number subscribers listed for delete : " + str(len(arr_subdel)))
 
             for subremove in arr_subdel[:-1]:
-                subremove_request = youtube.subscriptions().delete(
+                subremove_request = youtube_subs.subscriptions().delete(
                     id=subremove
                 )
                 print("Removing subscription ID : " + subremove)
@@ -494,7 +551,7 @@ def main(argv):
         else:
             prev_ytvid_id = ytvid_id
 
-            getsub_request = youtube.videos().list(
+            getsub_request = youtube_cmnt.videos().list(
                 part="snippet",
                 id=ytvid_id
             )
@@ -503,7 +560,7 @@ def main(argv):
 
 
             ## Check the non-spam comments
-            cmnt_request = youtube.commentThreads().list(
+            cmnt_request = youtube_cmnt.commentThreads().list(
                 part="snippet,replies",
                 maxResults=50,
                 order="time",
@@ -539,7 +596,7 @@ def main(argv):
 
 
             ## commenting on the channel
-            mycmnt_request = youtube.commentThreads().insert(
+            mycmnt_request = youtube_cmnt.commentThreads().insert(
                 part="snippet",
                 body=dict(
                     snippet=dict(
@@ -554,7 +611,7 @@ def main(argv):
             )
 
             ## subscribe
-            subadd_request = youtube.subscriptions().insert(
+            subadd_request = youtube_cmnt.subscriptions().insert(
                 part="contentDetails,snippet",
                 body=dict(
                     snippet=dict(
@@ -619,7 +676,7 @@ def main(argv):
                         if reply_check == 'null':
                             comment_count = comment_count + 1
                             print("Replying to Comment : " + str(comment_count))
-                            reply = youtube.comments().insert(
+                            reply = youtube_cmnt.comments().insert(
                                 part="snippet",
                                 body=dict(
                                 snippet=dict(
@@ -660,7 +717,7 @@ def main(argv):
 
                 if cmnt_commentownid != mychannelid:
                     ## Check Subscribers Count
-                    sub_request = youtube.channels().list(
+                    sub_request = youtube_next.channels().list(
                         part="statistics",
                         id=cmnt_commentownid
                     )
@@ -672,7 +729,7 @@ def main(argv):
                         print(cmnt_commentown + "Has Subscribers count : " + sub_count)
 
                         ## Check Subscription
-                        subcheck_request = youtube.subscriptions().list(
+                        subcheck_request = youtube_next.subscriptions().list(
                             part="snippet,contentDetails",
                             channelId=mychannelid,
                             forChannelId=cmnt_commentownid
@@ -681,7 +738,7 @@ def main(argv):
 
                         if len(subcheck_response["items"]) < 1:
                             ## Take Uploads Playlist ID
-                            content_request = youtube.channels().list(
+                            content_request = youtube_next.channels().list(
                                 part="contentDetails",
                                 id=cmnt_commentownid
                             )
@@ -692,7 +749,7 @@ def main(argv):
                                 print("uploads Playlist's ID :" + uploads_id)
 
                                 ## New Video ID
-                                plvid_request = youtube.playlistItems().list(
+                                plvid_request = youtube_next.playlistItems().list(
                                     playlistId=uploads_id,
                                     part="snippet",
                                     maxResults=1
@@ -702,7 +759,7 @@ def main(argv):
                                 if len(plvid_response["items"]) >= 1:
                                     newytvid_id = plvid_response["items"][0]["snippet"]["resourceId"]["videoId"]
                                     ## Validate comments are turned on or off
-                                    cmntoffon_request = youtube.videos().list(
+                                    cmntoffon_request = youtube_next.videos().list(
                                         part="statistics",
                                         id=newytvid_id
                                     )
@@ -713,7 +770,7 @@ def main(argv):
                                         cmntcountcheck = cmntoffon_response["items"][0]["statistics"]["commentCount"]
                                         if cmntcountcheck != "0":
                                             ## Check Comments length
-                                            newcmnt_request = youtube.commentThreads().list(
+                                            newcmnt_request = youtube_next.commentThreads().list(
                                                 part="snippet,replies",
                                                 maxResults=50,
                                                 order="time",

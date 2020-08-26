@@ -132,12 +132,13 @@ python auto-sub-precmnt-reply.py -v <ytvid_id> -u <google_user>
 * `waittime` : time to wait before going to next video for comment (by defaut it is 240 mins)
 * `reply_to_comment` : Enable this for reply to comment, If enabled, reply to comments when `loopsub_count = 0` (by default it is `True`)
 * `subcmnt_random` : Enable this for use Random comments otherwise it will choose predefined comments (by default it is `True`)
+* `prod_service` : Enable this for production services, for this you need 2 google user credentials (by default it is `False`)
 
 
 **Note :** Run the Script with following parameters
 
 * `ytvid_id` : your video ID
-* `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
+* `google_users` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
 
 ```bash
 python auto-sub-allcmnt-reply.py -v <ytvid_id> -u <google_user>
