@@ -16,7 +16,7 @@ params_validation="\n\npython auto-sub-precmnt-reply.py -v <ytvid_id> -u <google
 targetsub_maxcount = 10000
 targetsub_mincount = 50
 mysub_maxcount = 500
-mysub_delcount = 50
+mysub_delcount = 20
 cmnt_maxresult = 20
 cmnt_maxrespond = 5
 
@@ -512,7 +512,7 @@ def main(argv):
                 subdel_channel += subdel_response["items"]
                 subdel_pagetoken = subdel_response.get("nextPageToken")
 
-                if subdel_pagetoken == "" or len(subdel_channel) >= mysub_delcount:
+                if "nextPageToken" not in subdel_response or len(subdel_channel) >= mysub_delcount:
                     break
 
             for delchannels in subdel_channel:

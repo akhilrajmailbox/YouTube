@@ -100,7 +100,7 @@ python auto-sub.py -v <ytvid_id> -u <google_user>
 * `targetsub_maxcount` : maximum subscribers count can be for the channel going to comment (by defaut it is 10000)
 * `targetsub_mincount` : minimum subscribers count can be for the channel going to comment (by defaut it is 50)
 * `mysub_maxcount` : maximum subscribed channels by my channel (by defaut it is 500)
-* `mysub_delcount` : minimum subscribed channels by my channel (by defaut it is 50)
+* `mysub_delcount` : minimum subscribed channels by my channel (by defaut it is 20)
 * `cmnt_maxresult` : maximum result of comment (by defaut it is 20)
 * `cmnt_maxrespond` : maximum respond comment (by defaut it is 5)
 * `maxsmiles` : maximum number of smiles (by defaut it is 3)
@@ -125,14 +125,13 @@ python auto-sub-precmnt-reply.py -v <ytvid_id> -u <google_user>
 * `targetsub_maxcount` : maximum subscribers count can be for the channel going to comment (by defaut it is 10000)
 * `targetsub_mincount` : minimum subscribers count can be for the channel going to comment (by defaut it is 50)
 * `mysub_maxcount` : maximum subscribed channels by my channel (by defaut it is 500)
-* `mysub_delcount` : minimum subscribed channels by my channel (by defaut it is 50)
+* `mysub_delcount` : minimum subscribed channels by my channel (by defaut it is 20)
 * `cmnt_maxresult` : maximum result of comment (by defaut it is 20)
 * `cmnt_maxrespond` : maximum respond comment (by defaut it is 10)
 * `loopsub_maxcount` : number of subscription in a single loop before waittime (by defaut it is 10)
 * `waittime` : time to wait before going to next video for comment (by defaut it is 240 mins)
 * `reply_to_comment` : Enable this for reply to comment, If enabled, reply to comments when `loopsub_count = 0` (by default it is `True`)
 * `subcmnt_random` : Enable this for use Random comments otherwise it will choose predefined comments (by default it is `True`)
-* `prod_service` : Enable this for production services, for this you need 2 google user credentials (by default it is `False`)
 
 
 **Note :** Run the Script with following parameters
@@ -170,6 +169,38 @@ python auto-sub-allcmnt-reply.py -v <ytvid_id> -u <google_user>
 python get-url.py -v <ytvid_id> -u <google user> -c <number of result>
 ```
 
+
+
+
+
+## Repling to the video's comments on your channel
+
+**Note :** Run the Script with following parameters
+
+* `vid_id` : Video ID for check the comments and replying
+* `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
+
+
+```bash
+python all-reply.py -v <vid_id> -u <google user>
+```
+
+
+
+
+
+## Delete the Subscribers from your channel
+
+**Note :** Run the Script with following parameters
+
+* `mysub_maxcount` : Maximum Subscribers Counts need to persist on your channel
+* `mysub_delcount` : Maximum Subscribers need to Remove from your Channel which you Subscribed
+* `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
+
+
+```bash
+python sub-del.py -s <max sub number persist> -d <max sub number to delete> -u <google user>
+```
 
 
 
