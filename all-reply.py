@@ -159,6 +159,15 @@ def main(argv):
 
     print("Number comments : " + str(len(vid_cmnt)))
 
+    ## Counting the unreplied comments
+    unreplied_cmnt = 0
+    for mycmnt in vid_cmnt:
+        if "replies" not in mycmnt:
+            unreplied_cmnt = unreplied_cmnt + 1
+    print("Total unreplied Comments : " + str(unreplied_cmnt))
+
+
+    ## commenting to unreplied comments
     for mycmnt in vid_cmnt:
 
         if "replies" in mycmnt:
