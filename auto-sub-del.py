@@ -16,6 +16,7 @@ params_validation="\n\n python sub-del.py -s <max sub number persist> -d <max su
 
 api_service_name = "youtube"
 api_version = "v3"
+waittime = 720
 scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
 
 
@@ -76,57 +77,62 @@ def main(argv):
 
 ##################################################################
 
-    ## Check Subscriber Count
-    checksubdel_request = youtube.subscriptions().list(
-        part="snippet",
-        maxResults=50,
-        mine=True,
-        order="relevance"
-    )
-    checksubdel_response = checksubdel_request.execute()
-    mysubcount = checksubdel_response["pageInfo"]["totalResults"]
+    while 1:
+        ## Check Subscriber Count
+        checksubdel_request = youtube.subscriptions().list(
+            part="snippet",
+            maxResults=50,
+            mine=True,
+            order="relevance"
+        )
+        checksubdel_response = checksubdel_request.execute()
+        mysubcount = checksubdel_response["pageInfo"]["totalResults"]
 
-    ## Delete `mysub_delcount` Subscribers 
-    if int(mysubcount) >= int(mysub_maxcount):
-        print("Your Channel subscribed to " + str(mysubcount) + "\nNeed to Delete " + str(mysub_delcount) + " Subscribed channels")
-        subdel_channel = []
-        list_subdel = ""
-        arr_subdel = ""
-        subdel_pagetoken = ""
+        ## Delete `mysub_delcount` Subscribers 
+        if int(mysubcount) >= int(mysub_maxcount):
+            print("Your Channel subscribed to " + str(mysubcount) + "\nNeed to Delete " + str(mysub_delcount) + " Subscribed channels")
+            subdel_channel = []
+            list_subdel = ""
+            arr_subdel = ""
+            subdel_pagetoken = ""
 
-        while 1:
-            subdel_request = youtube.subscriptions().list(
-                part="snippet",
-                maxResults=50,
-                mine=True,
-                order="relevance",
-                pageToken=subdel_pagetoken
-            )
-            subdel_response = subdel_request.execute()
+            while 1:
+                subdel_request = youtube.subscriptions().list(
+                    part="snippet",
+                    maxResults=50,
+                    mine=True,
+                    order="relevance",
+                    pageToken=subdel_pagetoken
+                )
+                subdel_response = subdel_request.execute()
 
-            subdel_channel += subdel_response["items"]
-            subdel_pagetoken = subdel_response.get("nextPageToken")
+                subdel_channel += subdel_response["items"]
+                subdel_pagetoken = subdel_response.get("nextPageToken")
 
-            if "nextPageToken" not in subdel_response or len(subdel_channel) >= int(mysub_delcount):
-                break
+                if "nextPageToken" not in subdel_response or len(subdel_channel) >= int(mysub_delcount):
+                    break
 
-        for delchannels in subdel_channel:
-            list_subdel += delchannels["id"] + ","
+            for delchannels in subdel_channel:
+                list_subdel += delchannels["id"] + ","
 
-        arr_subdel = list_subdel.split(',')
-        print("Number subscribers listed for delete : " + mysub_delcount)
+            arr_subdel = list_subdel.split(',')
+            print("Number subscribers listed for delete : " + mysub_delcount)
 
-        for subremove in arr_subdel[:int(mysub_delcount)]:
-            subremove_request = youtube.subscriptions().delete(
-                id=subremove
-            )
-            print("Removing subscription ID : " + subremove)
-            subremove_response = subremove_request.execute()
+            for subremove in arr_subdel[:int(mysub_delcount)]:
+                subremove_request = youtube.subscriptions().delete(
+                    id=subremove
+                )
+                print("Removing subscription ID : " + subremove)
+                subremove_response = subremove_request.execute()
 
-    else:
-        print("Your Channel subscribed to " + str(mysubcount))
+        else:
+            print("Your Channel subscribed to " + str(mysubcount))
 
 
+        now = datetime.now(timezone.utc)
+        nextexe = (now + timedelta(minutes=waittime)).astimezone()
+        print("Sleeping for " + str(waittime) + " min (" + str(waittime_sec) + " sec). Next exe at : {nextexe:%I:%M %p}".format(**vars()))
+        time.sleep(waittime_sec)
 
 
 

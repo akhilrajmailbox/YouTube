@@ -16,7 +16,7 @@ pip install --upgrade google-api-python-client
 ```
 
 
-## Live Rename With Views and Channel Name of Last Commenter
+## Live Rename With Views and Channel Name of Last Commenter (auto)
 
 **Note :** Run the Script with following parameters
 
@@ -30,7 +30,7 @@ python vid-cmnt.py -v <ytvid_id> -u <google_user>
 
 
 
-## Comment Reply on Others Channel Videos
+## Comment Reply on Others Channel Videos (manual)
 
 **Note :** Update the following in the script before running
 
@@ -47,7 +47,7 @@ python cmnt-reply.py -v <ytvid_id> -u <google_user>
 
 
 
-## Auto Pilot for comments on Others Channel Video's Comments as Reply
+## Auto Pilot for comments on Others Channel Video's Comments as Reply (auto)
 
 **Note :** Update the following in the script before running
 
@@ -64,12 +64,12 @@ python cmnt-reply.py -v <ytvid_id> -u <google_user>
 * `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
 
 ```bash
-python auto-reply.py -v <ytvid_id> -u <google_user>
+python auto-cmnt-reply.py -v <ytvid_id> -u <google_user>
 ```
 
 
 
-## Auto Pilot for subscribe on Others Channel and comment
+## Auto Pilot for subscribe on Others Channel and comment (auto)
 
 **Note :** Update the following in the script before running
 
@@ -93,7 +93,7 @@ python auto-sub.py -v <ytvid_id> -u <google_user>
 
 
 
-## Auto Pilot for subscribe on Others Channel with pre defined messages and reply to comments
+## Auto Pilot for subscribe on Others Channel with pre defined messages and reply to comments (auto)
 
 **Note :** Update the following in the script before running
 
@@ -118,7 +118,7 @@ python auto-sub-precmnt-reply.py -v <ytvid_id> -u <google_user>
 
 
 
-## Auto Pilot for subscribe on Others Channel with Ramdom / Predefined messages and reply to comments
+## Auto Pilot for subscribe on Others Channel with Ramdom / Predefined messages and reply to comments (auto)
 
 **Note :** Update the following in the script before running
 
@@ -146,7 +146,25 @@ python auto-sub-allcmnt-reply.py -v <ytvid_id> -u <google_user>
 
 
 
-## Get the Video Url for New comments and Subscribe
+## Delete the Subscribers from your channel (auto)
+
+**Note :** Run the Script with following parameters
+
+* `mysub_maxcount` : Maximum Subscribers Counts need to persist on your channel
+* `mysub_delcount` : Maximum Subscribers need to Remove from your Channel which you Subscribed
+* `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
+* `waittime` : time to wait before going to next video for comment (by defaut it is 720 mins)
+
+
+```bash
+python auto-sub-del.py -s <max sub number persist> -d <max sub number to delete> -u <google user>
+```
+
+
+
+
+
+## Get the Video Url for New comments and Subscribe (manual)
 
 **Note :** Update the following in the script before running
 
@@ -173,23 +191,30 @@ python get-url.py -v <ytvid_id> -u <google user> -c <number of result>
 
 
 
-## Repling to the video's comments on your channel
+## Repling to the video's comments on your channel (manual)
+
+
+**Note :** Update the following in the script before running
+
+* `waittime` : time to wait before going to next video for comment (by defaut it is 10 sec)
+* `cmnt_maxrespond` : maximum respond comment (by defaut it is 99)
+
 
 **Note :** Run the Script with following parameters
 
-* `vid_id` : Video ID for check the comments and replying
+* `vid_id` : Video ID for check the comments and replying (if you want to check all comments give : `myallvideos`)
 * `google_user` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
 
 
 ```bash
-python all-reply.py -v <vid_id> -u <google user>
+python myvid-reply.py -v <vid_id> -u <google user>
 ```
 
 
 
 
 
-## Delete the Subscribers from your channel
+## Delete the Subscribers from your channel (manual)
 
 **Note :** Run the Script with following parameters
 

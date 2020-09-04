@@ -11,9 +11,10 @@ from datetime import datetime, timedelta, timezone
 
 
 ##################################################################
-params_validation="\n\n python all-reply.py -v <vid_id> -u <google user>\n google user : choose between 0 and 9\n"
+params_validation="\n\n python myvid-reply.py -v <vid_id> -u <google user>\n google user : choose between 0 and 9\n vid_id : choose : myallvideos , if you want to look for all comments\n"
 
 waittime = 10
+cmnt_maxrespond = 99
 api_service_name = "youtube"
 api_version = "v3"
 scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
@@ -121,16 +122,17 @@ def main(argv):
 
 
     ## Get Video channel ID
-    chkchannel_request = youtube.videos().list(
-        part="snippet",
-        id=vid_id
-    )
-    chk_response = chkchannel_request.execute()
-    chkchannelid = chk_response["items"][0]["snippet"]["channelId"]
+    if not vid_id == "myallvideos":
+        chkchannel_request = youtube.videos().list(
+            part="snippet",
+            id=vid_id
+        )
+        chk_response = chkchannel_request.execute()
+        chkchannelid = chk_response["items"][0]["snippet"]["channelId"]
 
-    if not mychannelid == chkchannelid:
-        print("You are not the owner for this video : " + vid_id)
-        sys.exit(2)
+        if not mychannelid == chkchannelid:
+            print("You are not the owner for this video : " + vid_id)
+            sys.exit(2)
 
 
 
@@ -142,19 +144,29 @@ def main(argv):
 
     while 1:
         ## Check the non-spam comments
-        cmnt_request = youtube.commentThreads().list(
-            part="snippet,replies",
-            maxResults=100,
-            order="time",
-            videoId=vid_id,
-            pageToken=next_pagetoken
-        )
+        if vid_id == "myallvideos":
+            cmnt_request = youtube.commentThreads().list(
+                part="snippet,replies",
+                maxResults=100,
+                order="time",
+                allThreadsRelatedToChannelId=mychannelid,
+                pageToken=next_pagetoken
+            )
+        else:
+            cmnt_request = youtube.commentThreads().list(
+                part="snippet,replies",
+                maxResults=100,
+                order="time",
+                videoId=vid_id,
+                pageToken=next_pagetoken
+            )
+
         cmnt_response = cmnt_request.execute()
 
         vid_cmnt += cmnt_response["items"]
         next_pagetoken = cmnt_response.get("nextPageToken")
 
-        if "nextPageToken" not in cmnt_response:
+        if "nextPageToken" not in cmnt_response or len(vid_cmnt) >= cmnt_maxrespond:
             break
 
     print("Number comments : " + str(len(vid_cmnt)))
@@ -164,14 +176,21 @@ def main(argv):
     for mycmnt in vid_cmnt:
         if "replies" not in mycmnt:
             unreplied_cmnt = unreplied_cmnt + 1
-    print("Total unreplied Comments : " + str(unreplied_cmnt))
+    print("Total unreplied Comments greater than : " + str(unreplied_cmnt))
 
 
     ## commenting to unreplied comments
-    for mycmnt in vid_cmnt:
+    for mycmnt in vid_cmnt[:cmnt_maxrespond]:
 
         if "replies" in mycmnt:
-            print("Someone Replied to This Comment")
+            replies_data = mycmnt["replies"]
+            for reply in replies_data["comments"]:
+                reply_own = reply["snippet"]["authorChannelId"]["value"]
+                # print(reply_own)
+                if reply_own == mychannelid:
+                    print("You already responded to the comment")
+                    break
+
         else:
             print("No one Replied to This Comment yet...!")
 
