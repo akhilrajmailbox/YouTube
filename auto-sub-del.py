@@ -129,6 +129,7 @@ def main(argv):
             print("Your Channel subscribed to " + str(mysubcount))
 
 
+        waittime_sec = waittime * 60
         now = datetime.now(timezone.utc)
         nextexe = (now + timedelta(minutes=waittime)).astimezone()
         print("Sleeping for " + str(waittime) + " min (" + str(waittime_sec) + " sec). Next exe at : {nextexe:%I:%M %p}".format(**vars()))
