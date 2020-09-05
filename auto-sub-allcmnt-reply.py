@@ -11,9 +11,7 @@ from datetime import datetime, timedelta, timezone
 
 
 ##################################################################
-params_validation="\n\n python auto-sub-allcmnt-reply.py -v <ytvid_id> -u <google user(s)>\n google user(s) : choose between 0 and 9\n"
-reply_to_comment = True
-subcmnt_random = True
+params_validation="\n\n python auto-sub-allcmnt-reply.py -s <y/n> -c <y/n> -r <y/n> -w <waittime> -v <ytvid_id> -u <google user>\n\n -s = enable or disable subscribe on other's channel\n -c = enable or disable reply on other's comments\n -r = enable or disable random comments (if -s value is n (disabled), then -r will disable automatically)\n -w = wait time in minute (default value is `240 min` (`4 hrs`))\n -v = video ID for initiating the run\n -u = choose the google user name\n"
 
 loopsub_maxcount = 10
 cmnt_maxresult = 20
@@ -23,7 +21,6 @@ targetsub_mincount = 50
 mysub_maxcount = 500
 mysub_delcount = 20
 
-waittime = 240
 api_service_name = "youtube"
 api_version = "v3"
 scopes = ["https://www.googleapis.com/auth/youtube.force-ssl"]
@@ -377,11 +374,15 @@ def main(argv):
     # *DO NOT* leave this option enabled in production.
     # os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
+    sub_bool = "" # no need to change anything here
+    cmnt_bool = "" # no need to change anything here
+    random_bool = "" # no need to change anything here
+    waittime_str = "" # no need to change anything here
     ytvid_id = "" # no need to change anything here
     google_user = "" # no need to change anything here
 
     try:
-        opts, args = getopt.getopt(argv,"hv:u:")
+        opts, args = getopt.getopt(argv,"hs:c:r:w:v:u:")
     except getopt.GetoptError:
         print(params_validation)
         sys.exit(2)
@@ -389,10 +390,66 @@ def main(argv):
         if opt == '-h':
             print(params_validation)
             sys.exit()
+        elif opt in ("-s"):
+            sub_bool = arg
+        elif opt in ("-c"):
+            cmnt_bool = arg
+        elif opt in ("-r"):
+            random_bool = arg
+        elif opt in ("-w"):
+            waittime_str = arg
         elif opt in ("-v"):
             ytvid_id = arg
         elif opt in ("-u"):
             google_user = arg
+
+    if sub_bool and len(sub_bool) == 1:
+        if sub_bool == "y":
+            sub_enable = True
+        elif sub_bool == "n":
+            sub_enable = False
+            subcmnt_random = False
+        else:
+            print(params_validation)
+            sys.exit(2)
+    else:
+        print(params_validation)
+        sys.exit(2)
+
+
+    if cmnt_bool and len(cmnt_bool) == 1:
+        if cmnt_bool == "y":
+            reply_to_comment = True
+        elif cmnt_bool == "n":
+            reply_to_comment = False
+        else:
+            print(params_validation)
+            sys.exit(2)
+    else:
+        print(params_validation)
+        sys.exit(2)
+
+
+    if sub_enable == True:
+        if random_bool and len(random_bool) == 1:
+            if random_bool == "y":
+                subcmnt_random = True
+            elif random_bool == "n":
+                subcmnt_random = False
+            else:
+                print(params_validation)
+                sys.exit(2)
+        else:
+            print(params_validation)
+            sys.exit(2)
+        
+
+    if waittime_str and len(waittime_str) >= 1:
+        print ("waittime ", waittime_str)
+        waittime = int(waittime_str)
+    else:
+        waittime = 240
+
 
     if ytvid_id and len(ytvid_id) >= 3:
         print ("Video ID is ", ytvid_id)
@@ -401,14 +458,21 @@ def main(argv):
         print(params_validation)
         sys.exit(2)
 
+
     if google_user and len(google_user) >= 1:
         print ("Google User is ", google_user)
     else:
         print(params_validation)
         sys.exit(2)
 
+    waittime_sec = waittime * 60
+    subscribe_count = 0
+    comment_count = 0
+    loopsub_count = 0
 
-    print("google_user : " + google_user)
+    print("\nGoing to run the loop with subcmnt_random = " + str(subcmnt_random) + ", waittime = " + str(waittime) + " min (" + str(waittime_sec) + " sec)")
+    print("google_user certs will be : secrets/" + google_user + "-yt-secret.json\n")
+
     client_secrets_file = "secrets/" + google_user + "-yt-secret.json"
 
     # Get credentials and create an API client
@@ -417,12 +481,6 @@ def main(argv):
     credentials = flow.run_console()
     youtube = googleapiclient.discovery.build(
         api_service_name, api_version, credentials=credentials)
-
-    waittime_sec = waittime * 60
-    subscribe_count = 0
-    comment_count = 0
-    loopsub_count = 0
-    print("Going to run the loop with waittime = " + str(waittime) + " min (" + str(waittime_sec) + " sec)")
 
     ## Get channel ID
     mychannel_request = youtube.channels().list(
@@ -436,54 +494,57 @@ def main(argv):
 
 ##################################################################
     while 1:
-        ## Check Subscriber Count
-        checksubdel_request = youtube.subscriptions().list(
-            part="snippet",
-            maxResults=50,
-            mine=True,
-            order="relevance"
-        )
-        checksubdel_response = checksubdel_request.execute()
-        mysubcount = checksubdel_response["pageInfo"]["totalResults"]
+        if sub_enable == True:
+            ## Check Subscriber Count
+            checksubdel_request = youtube.subscriptions().list(
+                part="snippet",
+                maxResults=50,
+                mine=True,
+                order="relevance"
+            )
+            checksubdel_response = checksubdel_request.execute()
+            mysubcount = checksubdel_response["pageInfo"]["totalResults"]
 
-        ## Delete `mysub_delcount` Subscribers 
-        if int(mysubcount) >= mysub_maxcount:
-            print("Your Channel : " + mychannelid + " subscribed to " + str(mysubcount) + "\nNeed to Delete " + str(mysub_delcount) + " Subscribed channels")
-            subdel_channel = []
-            list_subdel = ""
-            arr_subdel = ""
-            subdel_pagetoken = ""
+            ## Delete `mysub_delcount` Subscribers 
+            if int(mysubcount) >= mysub_maxcount:
+                print("Your Channel : " + mychannelid + " subscribed to " + str(mysubcount) + "\nNeed to Delete " + str(mysub_delcount) + " Subscribed channels")
+                subdel_channel = []
+                list_subdel = ""
+                arr_subdel = ""
+                subdel_pagetoken = ""
 
-            while 1:
-                subdel_request = youtube.subscriptions().list(
-                    part="snippet",
-                    maxResults=50,
-                    mine=True,
-                    order="relevance",
-                    pageToken=subdel_pagetoken
-                )
-                subdel_response = subdel_request.execute()
+                while 1:
+                    subdel_request = youtube.subscriptions().list(
+                        part="snippet",
+                        maxResults=50,
+                        mine=True,
+                        order="relevance",
+                        pageToken=subdel_pagetoken
+                    )
+                    subdel_response = subdel_request.execute()
 
-                subdel_channel += subdel_response["items"]
-                subdel_pagetoken = subdel_response.get("nextPageToken")
+                    subdel_channel += subdel_response["items"]
+                    subdel_pagetoken = subdel_response.get("nextPageToken")
 
-                if "nextPageToken" not in subdel_response or len(subdel_channel) >= mysub_delcount:
-                    break
+                    if "nextPageToken" not in subdel_response or len(subdel_channel) >= mysub_delcount:
+                        break
 
-            for delchannels in subdel_channel:
-                list_subdel += delchannels["id"] + ","
+                for delchannels in subdel_channel:
+                    list_subdel += delchannels["id"] + ","
 
-            arr_subdel = list_subdel.split(',')
-            print("Number subscribers listed for delete : " + str(len(arr_subdel)))
+                arr_subdel = list_subdel.split(',')
+                print("Number subscribers listed for delete : " + str(len(arr_subdel)))
 
-            for subremove in arr_subdel[:-1]:
-                subremove_request = youtube.subscriptions().delete(
-                    id=subremove
-                )
-                print("Removing subscription ID : " + subremove)
-                subremove_response = subremove_request.execute()
+                for subremove in arr_subdel[:-1]:
+                    subremove_request = youtube.subscriptions().delete(
+                        id=subremove
+                    )
+                    print("Removing subscription ID : " + subremove)
+                    subremove_response = subremove_request.execute()
+            else:
+                print("Your Channel : " + mychannelid + " subscribed to " + str(mysubcount))
         else:
-            print("Your Channel : " + mychannelid + " subscribed to " + str(mysubcount))
+            print("sub_enable has disabled")
 
 ##################################################################
 
@@ -515,7 +576,6 @@ def main(argv):
 
 
             if subcmnt_random == True:
-
                 cpcmnt_count = len(cmnt_response["items"])
                 min_edge = cpcmnt_count//2
                 max_edge = cpcmnt_count-2
@@ -567,9 +627,13 @@ def main(argv):
                     )
                 )
             )
+
             try:
-                print(mychannelid + " Going to subscribe the channel : " + subchannelid + " by commenting on the video : " + ytvid_id)
-                subadd_response = subadd_request.execute()
+                if sub_enable == True:
+                    print(mychannelid + " Going to subscribe the channel : " + subchannelid + " by commenting on the video : " + ytvid_id)
+                    subadd_response = subadd_request.execute()
+                else:
+                    print(mychannelid + " Going to comment on the video : " + ytvid_id + " for getting subscribers")
                 mycmnt_response = mycmnt_request.execute()
             except:
                 print("An exception occurred, " + mychannelid + " Not able to subscribe the channel : " + subchannelid + " but commented on the video : " + ytvid_id)

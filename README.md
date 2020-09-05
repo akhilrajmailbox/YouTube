@@ -129,18 +129,21 @@ python auto-sub-precmnt-reply.py -v <ytvid_id> -u <google_user>
 * `cmnt_maxresult` : maximum result of comment (by defaut it is 20)
 * `cmnt_maxrespond` : maximum respond comment (by defaut it is 10)
 * `loopsub_maxcount` : number of subscription in a single loop before waittime (by defaut it is 10)
-* `waittime` : time to wait before going to next video for comment (by defaut it is 240 mins)
-* `reply_to_comment` : Enable this for reply to comment, If enabled, reply to comments when `loopsub_count = 0` (by default it is `True`)
-* `subcmnt_random` : Enable this for use Random comments otherwise it will choose predefined comments (by default it is `True`)
 
 
 **Note :** Run the Script with following parameters
 
-* `ytvid_id` : your video ID
-* `google_users` : Google user (between 0 and 9), the secret file name will be `[0-9]-yt-secret.json` under folder `secrets`
+* `-h` : help
+* `-s` : enable or disable subscribe on other's channel
+* `-c` : enable or disable reply on other's comments
+* `-r` : enable or disable random comments (if -s value is n (disabled), then -r will disable automatically)
+* `-w` : wait time in minute (default value is `240 min` (`4 hrs`))
+* `-v` : video ID for initiating the run
+* `-u` : choose the google user name
+
 
 ```bash
-python auto-sub-allcmnt-reply.py -v <ytvid_id> -u <google_user>
+python auto-sub-allcmnt-reply.py -s <y/n> -c <y/n> -r <y/n> -w <waittime> -v <ytvid_id> -u <google user>
 ```
 
 
