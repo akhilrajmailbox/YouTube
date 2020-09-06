@@ -782,17 +782,29 @@ def main(argv):
                                             newcmnt_request = youtube.commentThreads().list(
                                                 part="snippet,replies",
                                                 maxResults=50,
-                                                order="time",
+                                                order="relevance",
                                                 videoId=newytvid_id
                                             )
                                             newcmnt_response = newcmnt_request.execute()
 
                                             cmnt_count = len(newcmnt_response["items"])
                                             if cmnt_count >= cmnt_maxresult:
-                                                ytvid_id = newytvid_id
-                                                print("Previous Video ID : " + prev_ytvid_id + "\n")
-                                                print("The new video : " + ytvid_id + " has " + str(cmnt_count) + " comments \n")
-                                                break
+                                                existcmnt_check = "null"
+
+                                                for existcmnt in newcmnt_response["items"][:3]:
+                                                    exist_commentownid = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorChannelId"]["value"]
+                                                    exist_commentown = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
+
+                                                    if exist_commentownid == mychannelid:
+                                                        print(exist_commentown + " already Commented on the video : " + newytvid_id) 
+                                                        existcmnt_check = "found"
+                                                        break
+
+                                                if existcmnt_check == "null":
+                                                    ytvid_id = newytvid_id
+                                                    print("Previous Video ID : " + prev_ytvid_id + "\n")
+                                                    print("The new video : " + ytvid_id + " has " + str(cmnt_count) + " comments \n")
+                                                    break
 
 
 
