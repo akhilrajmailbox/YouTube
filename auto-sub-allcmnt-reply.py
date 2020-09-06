@@ -646,59 +646,60 @@ def main(argv):
 
             if reply_to_comment == True:
                 if loopsub_count == 0:
-                    for item in cmnt_response["items"][2:cmnt_maxrespond]:
-                        random_support_replies_0 = randint(0,19)
-                        random_support_replies_1 = randint(0,19)
-                        random_support_replies_2 = randint(0,19)
-                        random_friends_replies_0 = randint(0,19)
-                        random_friends_replies_1 = randint(0,19)
-                        random_friends_replies_2 = randint(0,19)
-                        random_friends_replies_3 = randint(0,19)
-                        random_friends_replies_4 = randint(0,19)
-
-                        my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + " " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
-
-                        cmnt_commentid = item["id"];
+                    for item in cmnt_response["items"][:cmnt_maxrespond]:
+                        cmnt_commentid = item["id"]
+                        cmnt_commentownid = item["snippet"]["topLevelComment"]["snippet"]["authorChannelId"]["value"]
                         cmnt_commentown = item["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
+                        
+                        if cmnt_commentownid != mychannelid:
+                            random_support_replies_0 = randint(0,19)
+                            random_support_replies_1 = randint(0,19)
+                            random_support_replies_2 = randint(0,19)
+                            random_friends_replies_0 = randint(0,19)
+                            random_friends_replies_1 = randint(0,19)
+                            random_friends_replies_2 = randint(0,19)
+                            random_friends_replies_3 = randint(0,19)
+                            random_friends_replies_4 = randint(0,19)
+
+                            my_replies = support_replies_0[random_support_replies_0] + " " + support_replies_1[random_support_replies_1] + " " +  support_replies_2[random_support_replies_2] + " " + friends_replies_0[random_friends_replies_0] + " " + friends_replies_1[random_friends_replies_1] + " " + friends_replies_2[random_friends_replies_2] + " " + friends_replies_3[random_friends_replies_3] + " " + friends_replies_4[random_friends_replies_4]
+
+                            ## vaidate reply
+                            reply_check = "null"
+                            if "replies" in item:
+                                replies_data = item["replies"];
+                                for reply in replies_data["comments"]:
+                                    reply_check = "null"
+                                    reply_own = reply["snippet"]["authorChannelId"]["value"]
+                                    # print(reply_own)
+                                    contain = (reply_own in mychannelid)
+                                    if(contain):
+                                        print(mychannelid + " already response to the comment")
+                                        reply_check = "found"
+                                        break
+                                    else:
+                                        print(mychannelid + " going to respond to the latest comment")
+                            else:
+                                print("No one Replied to This Comment yet...!")
 
 
-                        ## vaidate reply
-                        reply_check = "null"
-                        if "replies" in item:
-                            replies_data = item["replies"];
-                            for reply in replies_data["comments"]:
-                                reply_check = "null"
-                                reply_own = reply["snippet"]["authorChannelId"]["value"]
-                                # print(reply_own)
-                                contain = (reply_own in mychannelid)
-                                if(contain):
-                                    print(mychannelid + " already response to the comment")
-                                    reply_check = "found"
-                                    break
-                                else:
-                                    print(mychannelid + " going to respond to the latest comment")
-                        else:
-                            print("No one Replied to This Comment yet...!")
-
-
-                        ## reply to the comment
-                        if reply_check == 'null':
-                            comment_count = comment_count + 1
-                            print("Replying to Comment : " + str(comment_count))
-                            reply = youtube.comments().insert(
-                                part="snippet",
-                                body=dict(
-                                snippet=dict(
-                                    parentId=cmnt_commentid,
-                                    textOriginal=my_replies
+                            ## reply to the comment
+                            if reply_check == 'null':
+                                comment_count = comment_count + 1
+                                print("Replying to Comment : " + str(comment_count))
+                                reply = youtube.comments().insert(
+                                    part="snippet",
+                                    body=dict(
+                                    snippet=dict(
+                                        parentId=cmnt_commentid,
+                                        textOriginal=my_replies
+                                    )
+                                    )
                                 )
-                                )
-                            )
-                            reply_response = reply.execute()
-                            print("Successfully Send the reply to " + cmnt_commentown)
+                                reply_response = reply.execute()
+                                print("Successfully Send the reply to " + cmnt_commentown)
 
-                        print("Sleeping for 10 sec")
-                        time.sleep(10)
+                            print("Sleeping for 10 sec")
+                            time.sleep(10)
 
                     print("Total Reply in this loop : " + str(comment_count))
 
@@ -720,7 +721,7 @@ def main(argv):
     ##################################################################
 
             ytvid_id = ""
-            for cmntitem in cmnt_response["items"][1:cmnt_maxresult]:
+            for cmntitem in cmnt_response["items"][:cmnt_maxresult]:
                 cmnt_commentownid = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorChannelId"]["value"]
                 cmnt_commentown = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
 
