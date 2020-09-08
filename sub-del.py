@@ -74,6 +74,15 @@ def main(argv):
     youtube = googleapiclient.discovery.build(
         api_service_name, api_version, credentials=credentials)
 
+
+    ## Get channel Name
+    mychannel_request = youtube.channels().list(
+        part="snippet",
+        mine=True
+    )
+    mychannel_response = mychannel_request.execute()
+    mychannelname = mychannel_response["items"][0]["snippet"]["title"]
+
 ##################################################################
 
     ## Check Subscriber Count
@@ -88,7 +97,7 @@ def main(argv):
 
     ## Delete `mysub_delcount` Subscribers 
     if int(mysubcount) >= int(mysub_maxcount):
-        print("Your Channel subscribed to " + str(mysubcount) + "\nNeed to Delete " + str(mysub_delcount) + " Subscribed channels")
+        print(mychannelname + " Subscribed to " + str(mysubcount) + "\nNeed to Delete " + str(mysub_delcount) + " Subscribed channels")
         subdel_channel = []
         list_subdel = ""
         arr_subdel = ""
@@ -124,7 +133,7 @@ def main(argv):
             subremove_response = subremove_request.execute()
 
     else:
-        print("Your Channel subscribed to " + str(mysubcount))
+        print(mychannelname + " Subscribed to " + str(mysubcount) + " Which is less than " + str(mysub_maxcount))
 
 
 

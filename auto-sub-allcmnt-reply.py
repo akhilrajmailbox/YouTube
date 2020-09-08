@@ -484,11 +484,13 @@ def main(argv):
 
     ## Get channel ID
     mychannel_request = youtube.channels().list(
-        part="statistics",
+        part="snippet,statistics",
         mine=True
     )
     mychannel_response = mychannel_request.execute()
     mychannelid = mychannel_response["items"][0]["id"]
+    mychannelname = mychannel_response["items"][0]["snippet"]["title"]
+
     prev_ytvid_id = ""
 
 
@@ -507,7 +509,7 @@ def main(argv):
 
             ## Delete `mysub_delcount` Subscribers 
             if int(mysubcount) >= mysub_maxcount:
-                print("Your Channel : " + mychannelid + " subscribed to " + str(mysubcount) + "\nNeed to Delete " + str(mysub_delcount) + " Subscribed channels")
+                print(mychannelname + " subscribed to " + str(mysubcount) + "\nNeed to Delete " + str(mysub_delcount) + " Subscribed channels")
                 subdel_channel = []
                 list_subdel = ""
                 arr_subdel = ""
@@ -630,13 +632,13 @@ def main(argv):
 
             try:
                 if sub_enable == True:
-                    print(mychannelid + " Going to subscribe the channel : " + subchannelid + " by commenting on the video : " + ytvid_id)
+                    print(mychannelname + " Going to subscribe the channel : " + subchannelid + " by commenting on the video : " + ytvid_id)
                     subadd_response = subadd_request.execute()
                 else:
-                    print(mychannelid + " Going to comment on the video : " + ytvid_id + " for getting subscribers")
+                    print(mychannelname + " Going to comment on the video : " + ytvid_id + " for getting subscribers")
                 mycmnt_response = mycmnt_request.execute()
             except:
-                print("An exception occurred, " + mychannelid + " Not able to subscribe the channel : " + subchannelid + " but commented on the video : " + ytvid_id)
+                print("An exception occurred, " + mychannelname + " Not able to subscribe the channel : " + subchannelid + " but commented on the video : " + ytvid_id)
 
             subscribe_count = subscribe_count + 1
             print("Total Subscribed Channel in this loop : " + str(subscribe_count))
@@ -673,11 +675,11 @@ def main(argv):
                                     # print(reply_own)
                                     contain = (reply_own in mychannelid)
                                     if(contain):
-                                        print(mychannelid + " already response to the comment")
+                                        print(mychannelname + " already response to the comment")
                                         reply_check = "found"
                                         break
                                     else:
-                                        print(mychannelid + " going to respond to the latest comment")
+                                        print(mychannelname + " going to respond to the latest comment")
                             else:
                                 print("No one Replied to This Comment yet...!")
 
@@ -794,10 +796,9 @@ def main(argv):
 
                                                 for existcmnt in newcmnt_response["items"][:3]:
                                                     exist_commentownid = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorChannelId"]["value"]
-                                                    exist_commentown = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorDisplayName"]
 
                                                     if exist_commentownid == mychannelid:
-                                                        print(exist_commentown + " already Commented on the video : " + newytvid_id) 
+                                                        print(mychannelname + " already Commented on the video : " + newytvid_id) 
                                                         existcmnt_check = "found"
                                                         break
 
