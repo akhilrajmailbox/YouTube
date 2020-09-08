@@ -783,6 +783,16 @@ def main(argv):
                                     if cmntkey_to_ckeck in cmntoffon_response['items'][0]['statistics']:
                                         cmntcountcheck = cmntoffon_response["items"][0]["statistics"]["commentCount"]
                                         if cmntcountcheck != "0":
+
+                                            ## Get owner channel ID
+                                            getsubowner_request = youtube.videos().list(
+                                                part="snippet",
+                                                id=newytvid_id
+                                            )
+                                            getsubowner_response = getsubowner_request.execute()
+                                            ownerchannelid = getsubowner_response["items"][0]["snippet"]["channelId"]
+                                            ownerchannelname = getsubowner_response["items"][0]["snippet"]["channelTitle"]
+
                                             ## Check Comments length
                                             newcmnt_request = youtube.commentThreads().list(
                                                 part="snippet,replies",
@@ -801,6 +811,10 @@ def main(argv):
 
                                                     if exist_commentownid == mychannelid:
                                                         print(mychannelname + " already Commented on the video : " + newytvid_id)
+                                                        existcmnt_check = "found"
+                                                        break
+                                                    elif exist_commentownid == ownerchannelid
+                                                        print(ownerchannelname + " Commented on the video : " + newytvid_id + " , so can't take this channel id for seaching next video")
                                                         existcmnt_check = "found"
                                                         break
                                                     else:
