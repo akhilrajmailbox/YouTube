@@ -675,7 +675,7 @@ def main(argv):
                                     # print(reply_own)
                                     contain = (reply_own in mychannelid)
                                     if(contain):
-                                        print(mychannelname + " already response to the comment")
+                                        print(mychannelname + " already responded to the comment")
                                         reply_check = "found"
                                         break
                                     else:
@@ -702,6 +702,8 @@ def main(argv):
 
                             print("Sleeping for 10 sec")
                             time.sleep(10)
+                        else:
+                            print(mychannelname + " already responded to this comment")
 
                     print("Total Reply in this loop : " + str(comment_count))
 
@@ -792,17 +794,19 @@ def main(argv):
 
                                             cmnt_count = len(newcmnt_response["items"])
                                             if cmnt_count >= cmnt_maxresult:
-                                                existcmnt_check = "null"
+                                                existcmnt_check = None
 
                                                 for existcmnt in newcmnt_response["items"][:3]:
                                                     exist_commentownid = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorChannelId"]["value"]
 
                                                     if exist_commentownid == mychannelid:
-                                                        print(mychannelname + " already Commented on the video : " + newytvid_id) 
+                                                        print(mychannelname + " already Commented on the video : " + newytvid_id)
                                                         existcmnt_check = "found"
                                                         break
+                                                    else:
+                                                        existcmnt_check = "notfound"
 
-                                                if existcmnt_check == "null":
+                                                if existcmnt_check == "notfound":
                                                     ytvid_id = newytvid_id
                                                     print("Previous Video ID : " + prev_ytvid_id + "\n")
                                                     print("The new video : " + ytvid_id + " has " + str(cmnt_count) + " comments \n")
