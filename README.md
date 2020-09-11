@@ -167,6 +167,28 @@ python auto-sub-del.py -s <max sub number persist> -d <max sub number to delete>
 
 
 
+## Repling to the video's comments on your channel (auto)
+
+
+**Note :** Update the following in the script before running
+
+* `cmnt_maxrespond` : maximum respond comment (by defaut it is 149)
+
+**Note :** Run the Script with following parameters
+
+* `-w` : wait time in minute (default value is `720 min` (`12 hrs`))
+* `-v` : video ID for initiating the run
+* `-u` : choose the google user name
+
+
+```bash
+python auto-myvid-reply.py -w <waittime> -v <vid_id> -u <google user>
+```
+
+
+
+
+
 ## Get the Video Url for New comments and Subscribe (manual)
 
 **Note :** Update the following in the script before running
