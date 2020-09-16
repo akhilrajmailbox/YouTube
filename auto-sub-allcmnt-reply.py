@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 
 
 ##################################################################
-params_validation="\n\n python auto-sub-allcmnt-reply.py -s <y/n> -c <y/n> -r <y/n> -w <waittime> -v <ytvid_id> -u <google user>\n\n -s = enable or disable subscribe on other's channel\n -c = enable or disable reply on other's comments\n -r = enable or disable random comments (if -s value is n (disabled), then -r will disable automatically)\n -w = wait time in minute (default value is `240 min` (`4 hrs`))\n -v = video ID for initiating the run\n -u = choose the google user name\n"
+params_validation="\n\n python auto-sub-allcmnt-reply.py -s <y/n> -c <y/n> -r <y/n> -w <waittime> -v <ytvid_id> -u <google user>\n\n -s = enable or disable subscribe on other's channel\n -c = enable or disable reply on other's comments\n -r = enable or disable random comments\n -w = wait time in minute (default value is `240 min` (`4 hrs`))\n -v = video ID for initiating the run\n -u = choose the google user name\n"
 
 loopsub_maxcount = 10
 cmnt_maxresult = 20
@@ -408,7 +408,6 @@ def main(argv):
             sub_enable = True
         elif sub_bool == "n":
             sub_enable = False
-            subcmnt_random = False
         else:
             print(params_validation)
             sys.exit(2)
@@ -430,19 +429,18 @@ def main(argv):
         sys.exit(2)
 
 
-    if sub_enable == True:
-        if random_bool and len(random_bool) == 1:
-            if random_bool == "y":
-                subcmnt_random = True
-            elif random_bool == "n":
-                subcmnt_random = False
-            else:
-                print(params_validation)
-                sys.exit(2)
+    if random_bool and len(random_bool) == 1:
+        if random_bool == "y":
+            subcmnt_random = True
+        elif random_bool == "n":
+            subcmnt_random = False
         else:
             print(params_validation)
             sys.exit(2)
-        
+    else:
+        print(params_validation)
+        sys.exit(2)
+
 
     if waittime_str and len(waittime_str) >= 1:
         print ("waittime ", waittime_str)
@@ -582,10 +580,19 @@ def main(argv):
                 cpcmnt_count = len(cmnt_response["items"])
                 min_edge = cpcmnt_count//2
                 max_edge = cpcmnt_count-2
-                random_replies = randint(min_edge,max_edge)
 
-                my_sub_cmnt = cmnt_response["items"][random_replies]["snippet"]["topLevelComment"]["snippet"]["textOriginal"]
-                print("Random ( " + str(random_replies) + " ) my_sub_cmnt is : " + my_sub_cmnt)
+                while 1:
+                    random_replies = randint(min_edge,max_edge)
+
+                    my_sub_cmnt = cmnt_response["items"][random_replies]["snippet"]["topLevelComment"]["snippet"]["textOriginal"]
+                    url_check = "http"
+
+                    contain = (url_check in my_sub_cmnt)
+                    if(contain):
+                        print(url_check + " found in the comment")
+                    else:
+                        print("Random ( " + str(random_replies) + " ) my_sub_cmnt is : " + my_sub_cmnt)
+                        break
 
             elif subcmnt_random == False:
                 random_sub_replies_0 = randint(0,19)
