@@ -805,17 +805,17 @@ def main(argv):
                                             if cmnt_count >= cmnt_maxresult:
                                                 existcmnt_check = None
 
-                                                for existcmnt in newcmnt_response["items"][:3]:
-                                                    exist_commentownid = cmntitem["snippet"]["topLevelComment"]["snippet"]["authorChannelId"]["value"]
+                                                for existcmnt in newcmnt_response["items"]:
+                                                    exist_commentownid = existcmnt["snippet"]["topLevelComment"]["snippet"]["authorChannelId"]["value"]
 
                                                     if exist_commentownid == mychannelid:
                                                         print(mychannelname + " already Commented on the video : " + newytvid_id)
                                                         existcmnt_check = "found"
                                                         break
-                                                    elif exist_commentownid == subchannelid:
-                                                        print(subchannelname + " Commented on the video : " + newytvid_id + " , so can't take this channel id for seaching next video")
-                                                        existcmnt_check = "found"
-                                                        break
+                                                    # elif exist_commentownid == subchannelid:
+                                                    #     print(subchannelname + " Commented on the video : " + newytvid_id + " , so can't take this channel id for seaching next video")
+                                                    #     existcmnt_check = "found"
+                                                    #     break
                                                     else:
                                                         existcmnt_check = "notfound"
 
