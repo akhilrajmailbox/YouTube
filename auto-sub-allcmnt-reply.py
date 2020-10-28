@@ -745,7 +745,12 @@ def main(argv):
                     )
                     sub_response = sub_request.execute()
                     sub_response_status = sub_response["items"][0]["statistics"]["hiddenSubscriberCount"]
-                    sub_count = sub_response["items"][0]["statistics"]["subscriberCount"]
+                    
+                    try:
+                        sub_count = sub_response["items"][0]["statistics"]["subscriberCount"]
+                    except:
+                        print("Failed to fetch sub_count, so assigning sub_count=0")
+                        sub_count = 0
 
                     if int(sub_count) > targetsub_mincount and int(sub_count) < targetsub_maxcount:
                         print(cmnt_commentown + "Has Subscribers count : " + sub_count)
