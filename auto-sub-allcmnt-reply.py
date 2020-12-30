@@ -482,12 +482,13 @@ def main(argv):
 
     ## Get channel ID
     mychannel_request = youtube.channels().list(
-        part="snippet,statistics",
+        part="snippet,statistics,contentDetails",
         mine=True
     )
     mychannel_response = mychannel_request.execute()
     mychannelid = mychannel_response["items"][0]["id"]
     mychannelname = mychannel_response["items"][0]["snippet"]["title"]
+    myuploadsid = content_response["items"][0]["contentDetails"]["relatedPlaylists"]["uploads"]
 
     prev_ytvid_id = ""
 
@@ -547,6 +548,48 @@ def main(argv):
             print("sub_enable has disabled")
 
 ##################################################################
+
+        if not ytvid_id or ytvid_id == prev_ytvid_id:
+            ## Video ID
+            my_plvid_request = youtube.playlistItems().list(
+                playlistId=myuploadsid,
+                part="snippet",
+                maxResults=25
+            )
+            my_plvid_response = my_plvid_request.execute()
+
+            if len(my_plvid_response["items"]) >= 1:
+                for cmntitem in my_plvid_response["items"][:24]:
+                    my_newytvid_id = my_plvid_response["snippet"]["resourceId"]["videoId"]
+                    ## Validate comments are turned on or off
+                    my_cmntoffon_request = youtube.videos().list(
+                        part="statistics",
+                        id=my_newytvid_id
+                    )
+                    my_cmntoffon_response = my_cmntoffon_request.execute()
+                    my_cmntkey_to_ckeck = 'commentCount'
+
+                    if my_cmntkey_to_ckeck in my_cmntoffon_response['items'][0]['statistics']:
+                        my_cmntcountcheck = my_cmntoffon_response["items"][0]["statistics"]["commentCount"]
+
+                        if my_cmntcountcheck != "0":
+                            ## Check Comments length
+                            my_newcmnt_request = youtube.commentThreads().list(
+                                part="snippet,replies",
+                                maxResults=50,
+                                order="relevance",
+                                videoId=my_newytvid_id
+                            )
+                            my_newcmnt_response = my_newcmnt_request.execute()
+                            my_cmnt_count = len(my_newcmnt_response["items"])
+
+                            if my_cmnt_count >= 20:
+                                print("ytvid_id will choose from own channel : " + my_newytvid_id)
+                                ytvid_id = my_newytvid_id
+                                break
+        else:
+            print("ytvid_id is not empty, work will continue")
+
 
         if not ytvid_id:
             print("ytvid_id is empty")
@@ -638,15 +681,16 @@ def main(argv):
                 )
             )
 
-            try:
-                if sub_enable == True:
-                    print(mychannelname + " Going to subscribe the channel : " + subchannelid + " by commenting on the video : " + ytvid_id)
-                    subadd_response = subadd_request.execute()
-                else:
-                    print(mychannelname + " Going to comment on the video : " + ytvid_id + " for getting subscribers")
-                mycmnt_response = mycmnt_request.execute()
-            except:
-                print("An exception occurred, " + mychannelname + " Not able to subscribe the channel : " + subchannelid + " but commented on the video : " + ytvid_id)
+            if mychannelid != subchannelid:
+                try:
+                    if sub_enable == True:
+                        print(mychannelname + " Going to subscribe the channel : " + subchannelid + " by commenting on the video : " + ytvid_id)
+                        subadd_response = subadd_request.execute()
+                    else:
+                        print(mychannelname + " Going to comment on the video : " + ytvid_id + " for getting subscribers")
+                    mycmnt_response = mycmnt_request.execute()
+                except:
+                    print("An exception occurred, " + mychannelname + " Not able to subscribe the channel : " + subchannelid + " but commented on the video : " + ytvid_id)
 
             subscribe_count = subscribe_count + 1
             print("Total Subscribed Channel in this loop : " + str(subscribe_count))
